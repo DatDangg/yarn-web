@@ -1,15 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import './i18n'; 
 import reportWebVitals from './reportWebVitals';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Header from './components/Header/Header';
+import { BrowserRouter, Route, Routes } from 'react-router';
+import MainLayout from './layout/MainLayout';
+import Home from './pages/Home/Home';
+import About from './pages/About/About';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+    <Routes>
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Route>
+    </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

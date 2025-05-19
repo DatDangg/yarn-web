@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +9,42 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+:root {
+  --font-Homemade: "Homemade Apple", cursive;
+  --font-IMFell: "IM Fell English", serif;
+  --font-Gentium: "Gentium Plus", serif;
+  --font-Dancing: "Dancing Script", cursive;
+}
+
+
+:root {
+  --primary1-color: #666666;
+  --primary2-color: #709370;
+  --border-color: #dbdbdb;
+  --outline-color: #999999;
+  --active-color: #5B961F;
+  --pink-color: #ffe6ea;
+  --text-color: #959595;
+}
+
+/* @layer utilities {
+  .font-imfell {
+    font-family: var(--font-IMFell);
+  }
+} */
+
+
+input::placeholder {
+  font-family: var(--font-Dancing);
+  letter-spacing: 1.5px;
+  color: #838383; 
+  font-size: 18px;
 }

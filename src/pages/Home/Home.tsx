@@ -1,0 +1,151 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import ProductCard from "../../components/ProductCard/ProductCard";
+import ImageSlider from "./ImageSlider";
+
+function Home() {
+    const { t } = useTranslation();
+
+    const products = [
+        { image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
+        { image: "/productImage1.jpg", name: "Yellow duck with brown hat", price: 99000 },
+        { image: "/productImage2.jpg", name: "Bunny Capybara", price: 99000, discount: 18 },
+        { image: "/productImage3.jpg", name: "Strawberry Headphones", price: 99000 },
+        { image: "/productImage4.jpg", name: "Stitchhhhhhhhh", price: 99000 },
+        { image: "/productImage2.jpg", name: "Bunny Capybara", price: 99000, discount: 18 },
+        { image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
+    ];
+
+    const blogs = [
+        { image: "/blog1.jpg", name: "How to crochet a table lamps" },
+        { image: "/blog2.jpg", name: "How to crochet sun and moon" },
+        { image: "/blog3.jpg", name: "How to crochet jelly fish" },
+        { image: "/blog3.jpg", name: "How to crochet jelly fish" },
+    ]
+
+    const [startIndex, setStartIndex] = useState(0);
+    const maxVisible = 4;
+
+    const handlePrev = () => {
+        setStartIndex(prev => Math.max(prev - 1, 0));
+    };
+
+    const handleNext = () => {
+        setStartIndex(prev => Math.min(prev + 1, products.length - maxVisible));
+    };
+
+    return (
+        <div className="mt-[12px]">
+            <ImageSlider />
+
+            <div className="relative pt-[28px]">
+                <img className="absolute" src='/line.png' />
+                <img className="absolute" src='/line1.png' />
+            </div>
+
+            <div className="container relative">
+                <div className="text-center text-[var(--primary2-color)] font-[family-name:var(--font-Dancing)] pt-1 my-4 text-[32px]">
+                    {t("input")}
+                </div>
+                <input
+                    className="text-[18px] text-[var(--primary1-color)] border-1 outline-[var(--outline-color)] w-full px-[12px] py-[8px] rounded-[5px] border-[var(--border-color)]"
+                    placeholder={t("placeholder")}
+                />
+            </div>
+
+            {/* Intro section */}
+            <div className="container mt-5 mb-[42px]">
+                <div className="mx-[240px] text-center">
+                    <div className="text-[36px] text-[var(--text-color)] font-[family-name:var(--font-IMFell)] font-bold mt-[24px]">
+                        {t("welcome")}
+                    </div>
+                    <div className="mt-[8px] font-[family-name:var(--font-Gentium)] text-[22px]">
+                        {t(`intro.line1`)}<br />
+                        {t("intro.line2")}<br />
+                        {t("intro.line3")}
+                    </div>
+                </div>
+            </div>
+
+            <div className="bg-[var(--pink-color)] mt-[24px] pb-[19px] text-center">
+                <div className="flex items-center justify-center pt-[48px] pb-[5px] leading-none">
+                    <div
+                        onClick={handlePrev}
+                        className={`group ${startIndex === 0 ? '' : 'cursor-pointer'}`}
+                        style={{ padding: '5px', display: 'inline-block' }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10.5" height="18" viewBox="0 0 7 12" fill="none">
+                            <path
+                                d="M2.7998 6.00078L6.6998 9.90078C6.88314 10.0841 6.9748 10.3174 6.9748 10.6008C6.9748 10.8841 6.88314 11.1174 6.6998 11.3008C6.51647 11.4841 6.28314 11.5758 5.9998 11.5758C5.71647 11.5758 5.48314 11.4841 5.2998 11.3008L0.699805 6.70078C0.599805 6.60078 0.528971 6.49245 0.487305 6.37578C0.445638 6.25911 0.424805 6.13411 0.424805 6.00078C0.424805 5.86745 0.445638 5.74245 0.487305 5.62578C0.528971 5.50911 0.599805 5.40078 0.699805 5.30078L5.2998 0.700781C5.48314 0.517448 5.71647 0.425781 5.9998 0.425781C6.28314 0.425781 6.51647 0.517448 6.6998 0.700781C6.88314 0.884115 6.9748 1.11745 6.9748 1.40078C6.9748 1.68411 6.88314 1.91745 6.6998 2.10078L2.7998 6.00078Z"
+                                className={startIndex === 0 ? `fill-[#ccc]` : `fill-[var(--primary2-color)] group-hover:fill-[#D32884]`}
+                            />
+                        </svg>
+                    </div>
+
+                    <div className="text-[32px] text-[var(--primary2-color)] font-[family-name:var(--font-IMFell)] px-3"> Latest Product </div>
+                    <div
+                        onClick={handleNext}
+                        className={`group ${startIndex === maxVisible - 1 ? `` : `cursor-pointer`}`}
+                        style={{ padding: '5px', display: 'inline-block' }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10.5" height="18" viewBox="0 0 7 12" fill="none">
+                            <path
+                                d="M4.5998 6.00078L0.699805 2.10078C0.516471 1.91745 0.424805 1.68411 0.424805 1.40078C0.424805 1.11745 0.516471 0.884115 0.699805 0.700781C0.883138 0.517448 1.11647 0.425781 1.3998 0.425781C1.68314 0.425781 1.91647 0.517448 2.0998 0.700781L6.6998 5.30078C6.7998 5.40078 6.87064 5.50911 6.9123 5.62578C6.95397 5.74245 6.9748 5.86745 6.9748 6.00078C6.9748 6.13411 6.95397 6.25911 6.9123 6.37578C6.87064 6.49245 6.7998 6.60078 6.6998 6.70078L2.0998 11.3008C1.91647 11.4841 1.68314 11.5758 1.3998 11.5758C1.11647 11.5758 0.883138 11.4841 0.699805 11.3008C0.516471 11.1174 0.424805 10.8841 0.424805 10.6008C0.424805 10.3174 0.516471 10.0841 0.699805 9.90078L4.5998 6.00078Z"
+                                className={startIndex === maxVisible - 1 ? `fill-[#ccc]` : `fill-[var(--primary2-color)] group-hover:fill-[#D32884]`}
+                            />
+                        </svg>
+                    </div>
+                </div>
+
+                <div className="text-[12px] font-[600] w-fit uppercase text-center m-auto pb-[24px] text-[#D32884] cursor-pointer decoration-solid underline hover:text-[var(--primary1-color)]">
+                    {t("view")}
+                </div>
+
+                {/* Product Cards */}
+                <div className="container">
+                    <div className="overflow-hidden">
+                        <div
+                            className="flex transition-transform duration-500 ease-in-out"
+                            style={{
+                                width: `${products.length * 25}%`,
+                                transform: `translateX(-${(100 / products.length) * startIndex}%)`
+                            }}
+                        >
+                            {products.map((product, idx) => (
+                                <div key={idx} className="w-1/4 p-2 box-border">
+                                    <ProductCard
+                                        img={product.image}
+                                        name={product.name}
+                                        price={product.price}
+                                        discount={product.discount}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* Blog Section */}
+            <div className="text-center mb-[24px]">
+                <div className="flex-col items-center justify-center pt-[48px] mb-[5px] pb-[24px] leading-none">
+                    <div className="text-[var(--primary2-color)] text-[18px] font-[family-name:var(--font-Homemade)] pb-[12px]">latest from</div>
+                    <div className="text-[var(--primary2-color)] uppercase text-[32px] font-[family-name:var(--font-IMFell)] px-4">The Blog</div>
+                </div>
+
+                {/* Product Cards */}
+                <div className="container">
+                    <div className="row">
+                        {blogs.map((blog, idx) => (
+                            <div key={idx} className="col-lg-3 flex-col items-center justify-center mx-0 cursor-pointer"> 
+                                <img src={blog.image} className="w-[100%] m-auto block"></img>
+                                <div className="text-[20px] uppercase font-[600] mt-[10px] font-[family-name:var(--font-IMFell)]">{blog.name}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Home;
