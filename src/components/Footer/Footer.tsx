@@ -15,9 +15,9 @@ function Footer() {
                         <div>
                             <img src="/logo.png" className="w-[300px]" />
                         </div>
-                        <div className="mt-3 text-[16px] font-[600] font-[family-name:var(--font-Gentium)]">
+                        <div className="pr-[40px] pt-[16px] text-[16px] font-[600] font-[family-name:var(--font-Gentium)]">
                             {t(`intro.line1`)}<br />
-                            {t("intro.line2")}
+                            {t("intro.line3")}
                         </div>
                     </div>
                     <div className="col-lg-2 offset-lg-1">

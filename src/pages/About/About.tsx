@@ -1,17 +1,12 @@
 import { useTranslation, Trans } from "react-i18next";
 import CustomSVG from "../../components/ui/CustomSVG"
 import PageBanner from "../../components/ui/PageBanner"
-import SmoothImage from "../../components/ui/SmoothImage"
 import SmoothText from "../../components/ui/SmoothText"
+import SmoothVideo from "../../components/ui/SmoothVideo";
+import SmoothImageSlider from "../../components/ui/SmoothImage";
 
 function About() {
     const { t } = useTranslation();
-    <Trans
-        i18nKey="about"
-        components={{
-            bold: <strong />,
-        }}
-    />
     return (
         <div className="mb-[24px]">
             <PageBanner name="About me" />
@@ -31,38 +26,31 @@ function About() {
                                 }}
                             />
                         </div>
-                        {/* <SmoothImage img={"/blog1.jpg"} />
-                        <div className="grow">
-                            <SmoothText 
-                                text={`
-                                    Hi y'all! I'm Lay, the creator of Wool you be mine, and welcome to my little place in this big world.
-                                    
-                                `} 
-                                title = "About me"
-                            />
-                        </div> */}
                     </div>
                 </div>
-                <div className="row pt-[36px]">
+                <div className="row pt-[48px]">
                     <div className="flex gap-5">
                         <div className="grow">
                             <SmoothText
-                                text={`
-                                    I'm falling in luv with 张若男 (Zhang Zuo Nannnnnnn).
-                                    Bui Truong Linh's music is my all-time favorite. 
-                                    I love handicrafts - though I’m too lazy to make them.
-                                `}
-                                title="Some random things about me"
+                                title={t('random')}
+                                text={[t('random1'), t('random2'), t('random3')]}
                             />
                         </div>
-                        <SmoothImage img={"/blog1.jpg"} />
+                        <SmoothImageSlider images={["/about1.jpg", "/about2.jpg", "/about3.jpg"]} />
+
                     </div>
                 </div>
-                <div className="row bg-[pink] relative" style={{margin: "36px 0"}}>
-                    <div style={{padding: "0 184px"}} className="absolute font-[600] top-0 bottom-0 left-0 right-0 w-fit h-fit my-auto text-[32px] text-center z-[999]">"I like the packaging so much that I even want to keep the products in the box, haha! A real must have!"</div>
+                        <SmoothVideo video="/Ruonan.mp4" />
+                <div className="row bg-[pink] relative" style={{ margin: "36px 0" }}>
+                    <div 
+                        style={{ padding: "0 200px" }} 
+                        className="absolute font-[family-name:var(--font-Gentium)] font-[600] top-0 bottom-0 left-0 right-0 w-fit h-fit my-auto text-[32px] text-center z-[999]"
+                    >
+                        <i>" {t('quote')} "</i>
+                    </div>
                     <svg
                         className="mb-[61px] mx-auto block opacity-50"
-                        style={{marginTop: "83px"}}
+                        style={{ marginTop: "83px" }}
                         preserveAspectRatio="xMidYMid meet"
                         viewBox="12.5 19.999 175 160.002"
                         height="264px"
