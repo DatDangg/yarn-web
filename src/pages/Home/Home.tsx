@@ -2,25 +2,29 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ImageSlider from "./ImageSlider";
+import BlogCard from "../../components/BlogCard/BlogCard";
 
 function Home() {
     const { t } = useTranslation();
 
     const products = [
-        { image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
-        { image: "/productImage1.jpg", name: "Yellow duck with brown hat", price: 99000 },
-        { image: "/productImage2.jpg", name: "Bunny Capybara", price: 99000, discount: 18 },
-        { image: "/productImage3.jpg", name: "Strawberry Headphones", price: 99000 },
-        { image: "/productImage4.jpg", name: "Stitchhhhhhhhh", price: 99000 },
-        { image: "/productImage2.jpg", name: "Bunny Capybara", price: 99000, discount: 18 },
-        { image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
+        { id: 1, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
+        { id: 2, image: "/productImage1.jpg", name: "Yellow duck with brown hat", price: 99000 },
+        { id: 3, image: "/productImage2.jpg", name: "Bunny Capybara", price: 99000, discount: 18 },
+        { id: 4, image: "/productImage3.jpg", name: "Strawberry Headphones", price: 99000 },
+        { id: 5, image: "/productImage4.jpg", name: "Stitchhhhhhhhh", price: 99000 },
+        { id: 6, image: "/productImage2.jpg", name: "Bunny Capybara", price: 99000, discount: 18 },
+        { id: 7, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
+        { id: 8, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
+        { id: 9, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
+        { id: 10, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
     ];
 
     const blogs = [
-        { image: "/blog1.jpg", name: "How to crochet a table lamps" },
-        { image: "/blog2.jpg", name: "How to crochet sun and moon" },
-        { image: "/blog3.jpg", name: "How to crochet jelly fish" },
-        { image: "/blog3.jpg", name: "How to crochet jelly fish" },
+        { id: 1, image: "/blog1.jpg", title: "How to crochet a table lamps", category: "Crochet" },
+        { id: 2, image: "/blog2.jpg", title: "How to crochet sun and moon", category: "Crochet" },
+        { id: 3, image: "/blog3.jpg", title: "How to crochet jelly fish", category: "Crochet" },
+        { id: 4, image: "/blog3.jpg", title: "How to crochet jelly fish", category: "Crochet" },
     ]
 
     const [startIndex, setStartIndex] = useState(0);
@@ -111,8 +115,8 @@ function Home() {
                                 transform: `translateX(-${(100 / products.length) * startIndex}%)`
                             }}
                         >
-                            {products.map((product, idx) => (
-                                <div key={idx} className="w-1/4 p-2 box-border">
+                            {products.map(product => (
+                                <div key={product.id} className="w-1/4 p-2 box-border">
                                     <ProductCard
                                         img={product.image}
                                         name={product.name}
@@ -132,13 +136,12 @@ function Home() {
                     <div className="text-[var(--primary2-color)] uppercase text-[32px] font-[family-name:var(--font-IMFell)] px-4">The Blog</div>
                 </div>
 
-                {/* Product Cards */}
+                {/* Blog Cards */}
                 <div className="container">
                     <div className="row">
-                        {blogs.map((blog, idx) => (
-                            <div key={idx} className="col-lg-3 flex-col items-center justify-center mx-0 cursor-pointer"> 
-                                <img src={blog.image} className="w-[100%] m-auto block"></img>
-                                <div className="text-[20px] uppercase font-[600] mt-[10px] font-[family-name:var(--font-IMFell)]">{blog.name}</div>
+                        {blogs.map(blog => (
+                            <div key={blog.id} className="col-lg-3 flex-col items-center justify-center mx-0"> 
+                                <BlogCard title={blog.title} category={blog.category} image={blog.image}/>
                             </div>
                         ))}
                     </div>

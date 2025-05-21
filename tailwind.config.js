@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'md-lg': '992px', // custom breakpoint
+      },
+    },
   },
   plugins: [],
 }

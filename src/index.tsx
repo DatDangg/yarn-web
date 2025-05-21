@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import MainLayout from './layout/MainLayout';
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
+import Blog from './pages/Blog/Blog';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,6 +21,7 @@ root.render(
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/blog" element={<Blog />} />
       </Route>
     </Routes>
     </BrowserRouter>

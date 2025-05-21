@@ -15,7 +15,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
     return (
         <>
-        <div className={styles.productItem}>
+        <div className={`${styles.productItem} ${styles.col_lg_2_4}`}>
             <img src={img} alt=""/>
             {discount && <div className={styles.productItem__noti}>{discount}% off</div>}
             <div className={styles.productItem__name}>
