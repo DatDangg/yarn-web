@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Pagination } from "antd";
 import BlogCard from "../../components/BlogCard/BlogCard";
 import PageBanner from "../../components/ui/PageBanner";
+import { useTranslation } from "react-i18next";
+import CustomPagination from "../../components/ui/CustomPagination";
 
 interface BlogProps {
     id: number;
@@ -11,6 +13,8 @@ interface BlogProps {
 }
 
 function Blog() {
+    const { t } = useTranslation();
+    
     const blogs: BlogProps[] = [
         { id: 1, image: "/blog1.jpg", title: "How to crochet a table lamps", category: "Crochet" },
         { id: 2, image: "/blog2.jpg", title: "How to crochet sun and moon", category: "Crochet" },
@@ -33,18 +37,16 @@ function Blog() {
     const [filteredBlogs, setFilteredBlogs] = useState<BlogProps[]>(blogs);
     const pageSize = 9;
 
-    // Debounce effect
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedSearchValue(searchValue);
-        }, 1000); // 300ms debounce delay
+        }, 1000);
 
         return () => {
             clearTimeout(handler);
         };
     }, [searchValue]);
 
-    // Filter blogs when debounced value changes
     useEffect(() => {
         const filtered = blogs.filter(blog =>
             blog.title.toLowerCase().includes(debouncedSearchValue.toLowerCase())
@@ -68,31 +70,43 @@ function Blog() {
             <div className="container mt-[32px]">
                 <div className="row pb-[32px]">
                     <div className="flex flex-col justify-end items-end">
-                        <label htmlFor="search" className="mb-[5px]">Search</label>
-                        <input
-                            id="search"
-                            value={searchValue}
-                            className="w-[300px] border-1 border-[black] px-[12px] py-[6px] rounded-[7px]"
-                            onChange={e => setSearchValue(e.target.value)}
-                        />
+                        <div className="relative w-[450px]">
+                            <input
+                                id="search"
+                                placeholder=" "
+                                value={searchValue}
+                                className="peer w-full text-[20px] border-[1px] border-[var(--border-color)] rounded px-[12px] py-[8px] placeholder-transparent focus:outline-none focus:border-[1px] focus:border-[var(--outline-color)]"
+                                onChange={e => setSearchValue(e.target.value)}
+                            />
+                            <label
+                                htmlFor="search"
+                                className="absolute left-3 top-[-18px] text-[20px] text-gray-500 transition-all duration-200 font-[family-name:var(--font-Gentium)] bg-white px-1 pointer-events-none
+                                           peer-placeholder-shown:top-[22%] peer-placeholder-shown:text-base peer-placeholder-shown:text-[24px] peer-placeholder-shown:text-[var(--text-color)] peer-placeholder-shown:font-[family-name:var(--font-Dancing)]
+                                           peer-focus:font-[family-name:var(--font-Gentium)] peer-focus:top-[-11px] peer-focus:leading-[20px] peer-focus:font-[500] peer-focus:text-[20px] peer-focus:text-[var(--active-color)] "
+                            >
+                                {t("blogFind")}
+                            </label >
+                        </div>
+
                     </div>
                 </div>
 
                 <div className="row">
                     {currentBlogs.map(blog => (
-                        <div key={blog.id} className="col-lg-4 my-[36px] flex-col items-center justify-center text-center">
+                        <div key={blog.id} className="col-lg-4 my-[36px] flex-col items-center justify-center text-center" style={{ padding: "6px 26px" }}>
                             <BlogCard title={blog.title} category={blog.category} image={blog.image} />
                         </div>
                     ))}
                 </div>
 
                 <div className="text-center flex justify-center mt-2">
-                    <Pagination
-                        current={currentPage}
+                    <CustomPagination
+                        currentPage={currentPage}
                         pageSize={pageSize}
                         total={filteredBlogs.length}
                         onChange={(page) => setCurrentPage(page)}
-                    />
+                        />
+
                 </div>
             </div>
         </div>

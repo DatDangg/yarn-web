@@ -26,10 +26,10 @@ function Footer() {
                         </div>
                         <ul className="m-0 flex-col pt-[20px] pl-0">
                             <li>
-                                <Link to="/" className="no-underline text-[16px] py-[4px] text-[black] font-[600] block hover:text-[var(--active-color)]">Blog</Link>
+                                <Link to="/blog" className="no-underline text-[16px] py-[4px] text-[black] font-[600] block hover:text-[var(--active-color)]">Blog</Link>
                             </li>
                             <li>
-                                <Link to="/" className="no-underline text-[16px] py-[4px] text-[black] font-[600] block hover:text-[var(--active-color)]">About</Link>
+                                <Link to="/about" className="no-underline text-[16px] py-[4px] text-[black] font-[600] block hover:text-[var(--active-color)]">About</Link>
                             </li>
                             <li>
                                 <Link to="/" className="no-underline text-[16px] py-[4px] text-[black] font-[600] block hover:text-[var(--active-color)]">Contact</Link>

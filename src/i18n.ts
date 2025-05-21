@@ -20,9 +20,11 @@ i18n
                     "intro.line2": "Here you’ll find easy tips, fun tutorials, and stuff you can buy—like cute patterns and handmade goodies. Whether you're just learning or you've got yarn in every drawer, there’s something here for you.",
                     "intro.line3": "Grab your hook, make a mess, and let’s crochet something awesome.",
                     blogIntro: "Jump into my blog! It’s packed with tons of fun stuff—helpful tips, easy techniques, a big ol’ free patterns, and loads more to keep your hook happy.",
+                    blogFind: "Finding blog...?",
                     input: "y'all looking for something?",
                     placeholder: "Seek and ye shall swoon...",
                     view: "View all",
+                    about: "Hi y'all! I'm Lay, the creator of <bold>Wool you be mine</bold>, and welcome to my little place in this big world."
                 },
             },
             vi: {
@@ -32,9 +34,11 @@ i18n
                     "intro.line2": "Ở đây có đủ thứ cho bạn khám phá: mẹo hay, hướng dẫn dễ hiểu, và cả đồ để mua - từ mẫu móc dễ thương đến sản phẩm làm sẵn xinh xắn. Dù bạn mới học hay đã móc đến mức len nằm khắp nhà, thì cũng có thứ dành cho bạn ở đây!",
                     "intro.line3": "Cầm móc lên, quấn len vào, và cùng nhau tạo ra điều gì đó thật tuyệt nhaaaaa.",
                     blogIntro: "Vào đây với mình! Ở đây có đủ thứ hay ho: các mẹo vặt, kỹ thuật đơn giản, thư viện với vô vàn mẫu móc miễn phí, và còn nhiều điều thú vị đang chờ bạn khám phá!",
+                    blogFind: "Blog...?",
                     input: "Đang tìm thứ gì đó à?",
                     placeholder: "Tìm kiếm đi, rồi bạn sẽ... rung động...",
                     view: "Xem tất cả",
+                    about: "meoeoeeoeoeoeoeoeoo."
                 },
             },
         },

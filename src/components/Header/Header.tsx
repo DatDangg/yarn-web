@@ -1,8 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
+import { useAuth } from '../../contexts/AuthContext';
 
 function Header() {
     const { i18n } = useTranslation();
+    const { isAuthenticated } = useAuth()
+    const navigate = useNavigate()
 
     const changeLanguage = (lang: 'en' | 'vi') => {
         i18n.changeLanguage(lang);
@@ -12,13 +15,13 @@ function Header() {
         <div style={{ backgroundImage: `url(/bgHeader.png)` }}>
             <div className='container'>
                 <div className='row items-center py-1'>
-                    <div className='col-lg-4'>
+                    <div className='col-lg-3'>
                         <Link to='/'>
                             <img src='/logo.png' className='w-[230px] cursor-pointer'></img>
                         </Link>
                     </div>
-                    <div className='col-lg-8 flex justify-end items-center'>
-                        <ul className='m-0 flex list-none font-[family-name:var(--font-Gentium)] uppercase text-[24px] text-[var(--primary1-color)]'>
+                    <div className='col-lg-7 flex justify-center'>
+                        <ul className='m-0 flex items-center list-none font-[family-name:var(--font-Gentium)] uppercase text-[24px] text-[var(--primary1-color)]'>
                             <li className='px-[24px] py-[12px] font-[600]'>
                                 <NavLink className={({ isActive }) =>
                                     isActive
@@ -51,7 +54,22 @@ function Header() {
                                 }
                                     to={"/faq"}>FAQ</NavLink>
                             </li>
-
+                        </ul>
+                    </div>
+                    <div className='col-lg-2'>
+                        <ul className='m-0 list-none flex items-center justify-end'>
+                            <li className="px-[12px] py-[12px] font-[600] text-[24px]">
+                                {isAuthenticated
+                                ?<i className="fa-regular fa-user"></i>
+                                :<button onClick={() => navigate("/login")} className='uppercase text-[18px] border-2 border-[var(--border-color)] px-[14px] py-[3px] hover:bg-[var(--active-color)] hover:border-[var(--active-color)] hover:text-[#fff]'>Login</button>
+                                }
+                            </li>
+                            <li className="relative px-[12px] py-[12px] font-[600] text-[24px]">
+                                <i className="fa-solid fa-cart-shopping"></i>
+                                <div className="absolute flex justify-center border-[1.5px] border-[#fff] items-center top-[5px] right-[1px] bg-[var(--primary2-color)] w-[22px] h-[22px] rounded-[50%]">
+                                    <div className='text-[#fff] text-[12px] leading-[12px]'>10</div>
+                                </div>
+                            </li>
                             <li className="px-[12px] py-[12px] font-[600]">
                                 <div className="relative w-[88px] h-[38px]">
                                     <input
@@ -83,8 +101,6 @@ function Header() {
                                     </label>
                                 </div>
                             </li>
-
-
                         </ul>
                     </div>
                 </div>

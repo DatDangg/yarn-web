@@ -1,13 +1,14 @@
-// ImageSlider.tsx
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 
-const images = ["/bg1.jpg", "/bg2.jpg", "/bg3.jpg"]
+interface props {
+  images: string[]
+}
 
-export default function ImageSlider() {
+const ImageSlider:React.FC<props> = ({ images }) => {
   return (
     <Swiper
       modules={[Pagination, Navigation, Autoplay]}
@@ -16,17 +17,19 @@ export default function ImageSlider() {
       pagination={{ clickable: true }}
       navigation
       effect='fade'
-      className="w-full h-[700px]"
+      className="w-full h-[600px]"
     >
       {images.map((src, index) => (
         <SwiperSlide key={index}>
-  <div
-    className="w-full h-[700px] bg-center bg-cover"
-    style={{ backgroundImage: `url(${src})` }}
-  />
-</SwiperSlide>
+          <div
+            className="w-full h-[600px] bg-center bg-cover"
+            style={{ backgroundImage: `url(${src})` }}
+          />
+        </SwiperSlide>
 
       ))}
     </Swiper>
   )
 }
+
+export default ImageSlider

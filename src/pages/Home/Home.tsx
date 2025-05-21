@@ -40,7 +40,7 @@ function Home() {
 
     return (
         <div className="mt-[12px]">
-            <ImageSlider />
+            <ImageSlider images={["/bg1.jpg", "/bg2.jpg", "/bg3.jpg"]} />
 
             <div className="relative pt-[28px]">
                 <img className="absolute" src='/line.png' />
@@ -89,13 +89,13 @@ function Home() {
                     <div className="text-[32px] text-[var(--primary2-color)] font-[family-name:var(--font-IMFell)] px-3"> Latest Product </div>
                     <div
                         onClick={handleNext}
-                        className={`group ${startIndex === maxVisible - 1 ? `` : `cursor-pointer`}`}
+                        className={`group ${startIndex === maxVisible + 2 ? `` : `cursor-pointer`}`}
                         style={{ padding: '5px', display: 'inline-block' }}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="10.5" height="18" viewBox="0 0 7 12" fill="none">
                             <path
                                 d="M4.5998 6.00078L0.699805 2.10078C0.516471 1.91745 0.424805 1.68411 0.424805 1.40078C0.424805 1.11745 0.516471 0.884115 0.699805 0.700781C0.883138 0.517448 1.11647 0.425781 1.3998 0.425781C1.68314 0.425781 1.91647 0.517448 2.0998 0.700781L6.6998 5.30078C6.7998 5.40078 6.87064 5.50911 6.9123 5.62578C6.95397 5.74245 6.9748 5.86745 6.9748 6.00078C6.9748 6.13411 6.95397 6.25911 6.9123 6.37578C6.87064 6.49245 6.7998 6.60078 6.6998 6.70078L2.0998 11.3008C1.91647 11.4841 1.68314 11.5758 1.3998 11.5758C1.11647 11.5758 0.883138 11.4841 0.699805 11.3008C0.516471 11.1174 0.424805 10.8841 0.424805 10.6008C0.424805 10.3174 0.516471 10.0841 0.699805 9.90078L4.5998 6.00078Z"
-                                className={startIndex === maxVisible - 1 ? `fill-[#ccc]` : `fill-[var(--primary2-color)] group-hover:fill-[#D32884]`}
+                                className={startIndex === maxVisible + 2 ? `fill-[#ccc]` : `fill-[var(--primary2-color)] group-hover:fill-[#D32884]`}
                             />
                         </svg>
                     </div>
@@ -130,7 +130,7 @@ function Home() {
                 </div>
             </div>
             {/* Blog Section */}
-            <div className="text-center mb-[24px]">
+            <div className="text-center mb-[48px]">
                 <div className="flex-col items-center justify-center pt-[48px] mb-[5px] pb-[24px] leading-none">
                     <div className="text-[var(--primary2-color)] text-[18px] font-[family-name:var(--font-Homemade)] pb-[12px]">latest from</div>
                     <div className="text-[var(--primary2-color)] uppercase text-[32px] font-[family-name:var(--font-IMFell)] px-4">The Blog</div>
