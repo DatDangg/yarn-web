@@ -43,6 +43,11 @@ code {
   transition: background-color 0.3s;
 }
 
+#about_me .swiper-button-next,
+#about_me .swiper-button-prev {
+  display: none;
+}
+
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
   color: var(--active-color)!important; 

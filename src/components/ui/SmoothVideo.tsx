@@ -1,11 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import useScrollTriggerOnMount from "../../hooks/useScrollTriggerOnMount";
+
 
 const SmoothVideo: React.FC<{ video: string }> = ({ video }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [width1, setWidth] = useState<any>(0)
+
+  useLayoutEffect(() => {
+    setWidth(window.innerWidth/1.8)
+    console.log(window.innerWidth/1.8)
+  }, [])
 
   useScrollTriggerOnMount();
 
@@ -52,7 +59,8 @@ const SmoothVideo: React.FC<{ video: string }> = ({ video }) => {
   return (
     <div
       ref={wrapperRef}
-      className="relative w-full max-w-[500px] mx-auto [clip-path:inset(0_0_calc(var(--reverse-progress,1)*100%+15px)_0_round_12px)] will-change-[clip-path]"
+      className={`relative w-full mx-auto [clip-path:inset(0_0_calc(var(--reverse-progress,1)*100%+15px)_0_round_12px)] will-change-[clip-path]`}
+      style={{maxWidth: `${width1}px`}}  //useLayoutEffect must be use in style not in classname
     >
       <div className="overflow-hidden rounded-[12px] relative">
         <video

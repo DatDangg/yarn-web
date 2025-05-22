@@ -8,17 +8,18 @@ import SmoothImageSlider from "../../components/ui/SmoothImage";
 function About() {
     const { t } = useTranslation();
     return (
-        <div className="mb-[24px]">
+        <div className="mb-[24px]" id="about_me">
             <PageBanner name="About me" />
             <div className="relative pt-[28px]">
                 <img className="absolute" src='/line.png' />
                 <img className="absolute" src='/line1.png' />
             </div>
-            <div className="container mt-[32px]">
+            <div className="container mt-[36px]">
+                {/* title */}
                 <div className="row">
                     <div className="flex gap-5 relative justify-center">
                         <CustomSVG className="w-[120px] h-auto absolute top-[-115px] left-[80px]" fillColor="var(--active-color)" />
-                        <div className="text-center text-[30px] px-[120px] py-[40px] font-[family-name:var(--font-Gentium)]">
+                        <div className="text-center text-[32px] px-[120px] py-[40px] font-[family-name:var(--font-Gentium)]">
                             <Trans
                                 i18nKey="about"
                                 components={{
@@ -28,6 +29,19 @@ function About() {
                         </div>
                     </div>
                 </div>
+                {/* intro */}
+                <div className="flex gap-2">
+                    <img src="/about1.jpg" className="w-[600px] rounded-[12px]"/>
+                    <div className="text-[28px] mt-[12px] font-[family-name:var(--font-Gentium)] grow mx-[24px] text-justify leading-[1.7]"> 
+                        <div className="pb-[14px]">{t(`about1`)}</div>
+                        <div className="pb-[14px]">{t(`about2`)}</div>
+                        <div className="pb-[14px]">{t(`about3`)}</div>
+                        <div className="pb-[14px]">{t(`about4`)}</div>
+                        <div className="pb-[14px]">{t(`about5`)}</div>
+                        <div className="pb-[14px]">{t(`about6`)}</div>
+                    </div>
+                </div>
+                {/* image swipe + random things */}
                 <div className="row pt-[48px]">
                     <div className="flex gap-5">
                         <div className="grow">
@@ -40,10 +54,14 @@ function About() {
 
                     </div>
                 </div>
-                        <SmoothVideo video="/Ruonan.mp4" />
+                {/* video */}
+                <div className="mt-[64px] w-full">
+                    <SmoothVideo video="/Ruonan.mp4" />
+                </div>
+                {/* Quote */}
                 <div className="row bg-[pink] relative" style={{ margin: "36px 0" }}>
-                    <div 
-                        style={{ padding: "0 200px" }} 
+                    <div
+                        style={{ padding: "0 200px" }}
                         className="absolute font-[family-name:var(--font-Gentium)] font-[600] top-0 bottom-0 left-0 right-0 w-fit h-fit my-auto text-[32px] text-center z-[999]"
                     >
                         <i>" {t('quote')} "</i>

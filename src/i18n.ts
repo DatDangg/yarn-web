@@ -30,6 +30,12 @@ i18n
                     random1 : "I’m a lot enchanted by 张若男. Falling for Zhang Ruonan feels like watching light spill through a window - gentle, and somehow inevitable.",
                     random2: "I adore handicrafts - and sure, I’m lazy, but when the mood strikes, I make magic.",
                     random3: "There’s something in Bui Truong Linh’s melodies that makes me feel a little less alone.",
+                    about1: "I’m a frontend developer (a little lazy, I admit =)))",
+                    about2: "My love for code started in high school, and since then, it’s been my favorite way to bring ideas to life.",
+                    about3: "I especially enjoy crafting luxury animations and adding small, cute UI touches that make a site feel cuteeee and personal.",
+                    about4: "My workspace? Shared with more cats (but not riel) than I care to count =))",
+                    about5: "Inspiration comes from dreamy ideas, favorite websites, and those random creative sparks that hit out of nowhere.",
+                    about6: "This site is a soft little slice of me—where design, code, and comfort all come together."
                 },
             },
             vi: {
@@ -47,8 +53,14 @@ i18n
                     quote: "Lập trình và móc len tưởng chừng chẳng dính dáng gì, nhưng thật ra đều có điểm chung: chỉ cần sai một bước là phải gỡ sạch sẽ từ đầu. Một bên là code vỡ layout, một bên là khăn vặn vẹo không rõ hình thù. Và vâng, mình nói chuyện một mình với cái máy lẫn cuộn len như thể tụi nó hiểu.",
                     random: "Góc nhỏ những điều vu vơ của mình",
                     random1 : "Mình thực sự bị Zhang Ruonan mê hoặc - nhiều hơn mình muốn thừa nhận. Cảm giác rung động vì Zhang Ruonan giống như ánh nắng xuyên qua ô cửa - nhẹ nhàng, mà không cưỡng lại được.",
-                    random2: "Mình mê đồ thủ công - lười thì lười thật, nhưng hứng lên là tay cũng khéo lắm đấy.",
+                    random2: "Mình mê đồ thủ công - lười thì lười thật, nhưng hứng lên là tay cũng khéo lắm nhe.",
                     random3: "Có những lúc chỉ muốn mở nhạc của Bùi Trường Linh và để mọi thứ trôi đi một chút.",
+                    about1: "Mình là một frontend developer (có hơi... lười chút =)))",
+                    about2: "Bén duyên với code từ thời cấp ba, và từ đó tới giờ, mình mê việc biến ý tưởng thành những trang web.",
+                    about3: "Mình đặc biệt thích những animation xịn xò, thỉnh thoảng thêm chút UI dễ thương nữa.",
+                    about4: "Góc làm việc thì lúc nào cũng có rất nhiềuuu bé mèo (nhưng không riel :>) làm đồng nghiệp.",
+                    about5: "Ý tưởng đến từ những giấc mơ, những trang web mình yêu thích, và cả ở những lúc không ngờ nhất.",
+                    about6: "Trang web này là một góc nhỏ mềm mại của mình - nơi code, đam mê, cảm hứng và chút dễ thương gặp nhau."
                 },
             },
         },

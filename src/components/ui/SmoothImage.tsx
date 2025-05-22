@@ -14,7 +14,7 @@ interface SmoothImageSliderProps {
 const SmoothImage: React.FC<{ src: string }> = ({ src }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  // useScrollTriggerOnMount();
+  useScrollTriggerOnMount();
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -31,21 +31,20 @@ const SmoothImage: React.FC<{ src: string }> = ({ src }) => {
     rafId = requestAnimationFrame(raf);
 
     const handleScroll = () => {
-  const rect = wrapper.getBoundingClientRect();
-  const windowHeight = window.innerHeight;
-  const imageHeight = wrapper.offsetHeight;
+      const rect = wrapper.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const imageHeight = wrapper.offsetHeight;
 
-  const visibleHeight = windowHeight - rect.top;
-  const progress = Math.min(Math.max(visibleHeight / imageHeight, 0), 1);
-  const reverse = 1 - progress;
+      const visibleHeight = windowHeight - rect.top;
+      const progress = Math.min(Math.max(visibleHeight / imageHeight, 0), 1);
+      const reverse = 1 - progress;
 
-  wrapper.style.setProperty("--reverse-progress", reverse.toString());
-};
+      wrapper.style.setProperty("--reverse-progress", reverse.toString());
+    };
 
-lenis.on("scroll", handleScroll);
+    lenis.on("scroll", handleScroll);
 
-// Trigger scroll once on mount
-handleScroll();
+    handleScroll();
 
 
     return () => {
@@ -57,7 +56,7 @@ handleScroll();
   return (
     <div
       ref={wrapperRef}
-      className="relative w-full max-w-[500px] mx-auto [clip-path:inset(0_0_calc(var(--reverse-progress,1)*100%+15px)_0_round_12px)] will-change-[clip-path]"
+      className="relative w-full max-w-[500px] mx-auto h-[580px] flex justify-center items-center [clip-path:inset(0_0_calc(var(--reverse-progress,1)*100%+15px)_0_round_12px)] will-change-[clip-path]"
     >
       <div className="overflow-hidden rounded-[12px]">
         <img
@@ -75,10 +74,10 @@ const SmoothImageSlider: React.FC<SmoothImageSliderProps> = ({ images }) => {
     <Swiper
       modules={[Pagination, Navigation, Autoplay]}
       loop={true}
-      autoplay={{ delay: 1000, disableOnInteraction: false }}
+      autoplay={{ delay: 100000, disableOnInteraction: false }}
       pagination={{ clickable: true }}
       navigation
-      className="w-full h-[600px]"
+      className="w-full h-[600px] my-auto"
     >
       {images.map((src, index) => (
         <SwiperSlide key={index}>

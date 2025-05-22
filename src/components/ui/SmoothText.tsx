@@ -54,14 +54,14 @@ const SmoothText: React.FC<SmoothTextProps> = ({ text, title }) => {
         "
       ></div>
       <div className="sticky w-full bottom-[18px] pt-[40px] pb-[20px] px-[40px]">
-        <div className="text-[24px] uppercase font-[500]">{title}</div>
+        <div className="text-[24px] uppercase font-[700] font-[family-name:var(--font-Gentium)]">{title}</div>
         <div className="text-[24px] mt-[24px]">
           {Array.isArray(text) ? (
             <ul className="list-none pl-0">
               {lines.map((line, index) => (
                 <li key={index} className="flex items-start gap-2 mb-2">
                   <span role="img" aria-label="cat">😸</span>
-                  <span>{line}</span>
+                  <span className="font-[family-name:var(--font-Gentium)]">{line}</span>
                 </li>
               ))}
             </ul>
