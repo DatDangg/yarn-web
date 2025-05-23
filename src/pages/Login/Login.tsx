@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function Login() {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  // Nếu đã login thì chuyển hướng về trang chính
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/');
@@ -15,7 +16,7 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    login(); // gọi hàm login giả lập
+    login(username, password);
   };
 
   return (
@@ -28,6 +29,8 @@ export default function Login() {
             type="text"
             className="w-full border px-3 py-2 rounded"
             placeholder="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div className="mb-4">
@@ -36,6 +39,8 @@ export default function Login() {
             type="password"
             className="w-full border px-3 py-2 rounded"
             placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <button

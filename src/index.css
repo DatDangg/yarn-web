@@ -54,11 +54,17 @@ code {
 }
 
 
-input::placeholder {
+#home input::placeholder {
   font-family: var(--font-Dancing);
   letter-spacing: 1.5px;
   color: #838383; 
   font-size: 18px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 
 .ant-pagination-item-active {
@@ -78,4 +84,8 @@ input::placeholder {
 .ant-pagination-item-link:hover {
   transform: scale(1.5);
   background-color: transparent !important;
+}
+
+.ant-table-thead .ant-table-cell {
+  font-size: 18px;
 }

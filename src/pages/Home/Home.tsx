@@ -1,31 +1,40 @@
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ImageSlider from "./ImageSlider";
 import BlogCard from "../../components/BlogCard/BlogCard";
+import axios from "axios";
+
+interface ProductProps {
+    id: number,
+    name: string,
+    image: string,
+    price: number,
+    discount: number,
+}
+
+interface BlogProps {
+    id: number,
+    title: string,
+    image: string,
+    category: string,
+}
 
 function Home() {
     const { t } = useTranslation();
+    const API = process.env.REACT_APP_API_URL;
+    const [products, setProducts] = useState<ProductProps[]>([])
+    const [blogs, setBlogs] = useState<BlogProps[]>([])
 
-    const products = [
-        { id: 1, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
-        { id: 2, image: "/productImage1.jpg", name: "Yellow duck with brown hat", price: 99000 },
-        { id: 3, image: "/productImage2.jpg", name: "Bunny Capybara", price: 99000, discount: 18 },
-        { id: 4, image: "/productImage3.jpg", name: "Strawberry Headphones", price: 99000 },
-        { id: 5, image: "/productImage4.jpg", name: "Stitchhhhhhhhh", price: 99000 },
-        { id: 6, image: "/productImage2.jpg", name: "Bunny Capybara", price: 99000, discount: 18 },
-        { id: 7, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
-        { id: 8, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
-        { id: 9, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
-        { id: 10, image: "/productImage.jpg", name: "Flower desk buddy", price: 99000, discount: 35 },
-    ];
+    useEffect(() => {
+        axios.get(`${API}/product`) 
+        .then(res => setProducts(res.data))
+        .catch(err => console.log(err))
 
-    const blogs = [
-        { id: 1, image: "/blog1.jpg", title: "How to crochet a table lamps", category: "Crochet" },
-        { id: 2, image: "/blog2.jpg", title: "How to crochet sun and moon", category: "Crochet" },
-        { id: 3, image: "/blog3.jpg", title: "How to crochet jelly fish", category: "Crochet" },
-        { id: 4, image: "/blog3.jpg", title: "How to crochet jelly fish", category: "Crochet" },
-    ]
+        axios.get(`${API}/blog?_sort=id&_order=desc&_limit=4'`) 
+        .then(res => setBlogs(res.data))
+        .catch(err => console.log(err))
+    },[])
 
     const [startIndex, setStartIndex] = useState(0);
     const maxVisible = 4;
@@ -38,8 +47,10 @@ function Home() {
         setStartIndex(prev => Math.min(prev + 1, products.length - maxVisible));
     };
 
+      
+
     return (
-        <div className="mt-[12px]">
+        <div className="mt-[12px]" id="home">
             <ImageSlider images={["/bg1.jpg", "/bg2.jpg", "/bg3.jpg"]} />
 
             <div className="relative pt-[28px]">
@@ -122,6 +133,7 @@ function Home() {
                                         name={product.name}
                                         price={product.price}
                                         discount={product.discount}
+                                        id={product.id}
                                     />
                                 </div>
                             ))}

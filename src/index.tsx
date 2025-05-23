@@ -14,24 +14,40 @@ import Blog from './pages/Blog/Blog';
 import Login from './pages/Login/Login';
 import { AuthProvider } from './contexts/AuthContext';
 import ScrollToTop from './components/ui/ScrollToTop';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import { ToastContainer } from 'react-toastify';
+import Cart from './pages/Cart/Cart';
+import AppInitializer from './components/ui/AppInitializer';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-      <ScrollToTop />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/blog" element={<Blog />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <BrowserRouter>
+          <ToastContainer
+            autoClose={3000}
+            hideProgressBar={false}
+            closeOnClick
+            pauseOnHover={false}
+            draggable
+            className="text-[20px]" />
+          <ScrollToTop />
+          <AppInitializer />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/cart" element={<Cart />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </Provider>
   </React.StrictMode>
 );
 

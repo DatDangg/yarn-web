@@ -1,0 +1,217 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "dat",
+      "password": "123",
+      "token": "mock_token"
+    },
+    {
+      "id": 2,
+      "username": "lay",
+      "password": "123",
+      "token": "mock_token1"
+    }
+  ],
+  "product": [
+    {
+      "id": 1,
+      "image": "/productImage.jpg",
+      "name": "Flower desk buddy",
+      "quantity": 25,
+      "price": 99000,
+      "discount": 35
+    },
+    {
+      "id": 2,
+      "image": "/productImage1.jpg",
+      "name": "Yellow duck with brown hat",
+      "quantity": 25,
+      "price": 99000
+    },
+    {
+      "id": 3,
+      "image": "/productImage2.jpg",
+      "name": "Bunny Capybara",
+      "quantity": 25,
+      "price": 99000,
+      "discount": 18
+    },
+    {
+      "id": 4,
+      "image": "/productImage3.jpg",
+      "name": "Strawberry Headphones",
+      "quantity": 25,
+      "price": 99000
+    },
+    {
+      "id": 5,
+      "image": "/productImage4.jpg",
+      "name": "Stitchhhhhhhhh",
+      "quantity": 25,
+      "price": 99000
+    },
+    {
+      "id": 6,
+      "image": "/productImage2.jpg",
+      "name": "Bunny Capybara",
+      "quantity": 25,
+      "price": 99000,
+      "discount": 18
+    },
+    {
+      "id": 7,
+      "image": "/productImage.jpg",
+      "name": "Flower desk buddy",
+      "quantity": 25,
+      "price": 99000,
+      "discount": 35
+    },
+    {
+      "id": 8,
+      "image": "/productImage.jpg",
+      "name": "Flower desk buddy",
+      "quantity": 25,
+      "price": 99000,
+      "discount": 35
+    },
+    {
+      "id": 9,
+      "image": "/productImage.jpg",
+      "name": "Flower desk buddy",
+      "quantity": 25,
+      "price": 99000,
+      "discount": 35
+    },
+    {
+      "id": 10,
+      "image": "/productImage.jpg",
+      "name": "Flower desk buddy",
+      "quantity": 25,
+      "price": 99000,
+      "discount": 35
+    }
+  ],
+  "blog": [
+    {
+      "id": 1,
+      "image": "/blog1.jpg",
+      "title": "How to crochet a table lamps",
+      "category": "Crochet"
+    },
+    {
+      "id": 2,
+      "image": "/blog2.jpg",
+      "title": "How to crochet sun and moon",
+      "category": "Crochet"
+    },
+    {
+      "id": 3,
+      "image": "/blog3.jpg",
+      "title": "How to crochet jelly fish",
+      "category": "Crochet"
+    },
+    {
+      "id": 4,
+      "image": "/blog2.jpg",
+      "title": "How to crochet sun and moon",
+      "category": "Crochet"
+    },
+    {
+      "id": 5,
+      "image": "/blog3.jpg",
+      "title": "How to crochet jelly fish",
+      "category": "Crochet"
+    },
+    {
+      "id": 6,
+      "image": "/blog1.jpg",
+      "title": "How to crochet a table lamps",
+      "category": "Crochet"
+    },
+    {
+      "id": 7,
+      "image": "/blog2.jpg",
+      "title": "How to crochet sun and moon",
+      "category": "Crochet"
+    },
+    {
+      "id": 8,
+      "image": "/blog3.jpg",
+      "title": "How to crochet jelly fish",
+      "category": "Crochet"
+    },
+    {
+      "id": 9,
+      "image": "/blog2.jpg",
+      "title": "How to crochet sun and moon",
+      "category": "Crochet"
+    },
+    {
+      "id": 10,
+      "image": "/blog1.jpg",
+      "title": "How to crochet a table lamps",
+      "category": "Crochet"
+    },
+    {
+      "id": 11,
+      "image": "/blog2.jpg",
+      "title": "How to crochet sun and moon",
+      "category": "Crochet"
+    },
+    {
+      "id": 12,
+      "image": "/blog3.jpg",
+      "title": "How to crochet jelly fish",
+      "category": "Crochet"
+    },
+    {
+      "id": 13,
+      "image": "/blog1.jpg",
+      "title": "How to crochet a table lamps",
+      "category": "Crochet"
+    }
+  ],
+  "wishlist": [
+    {
+      "id": 1,
+      "product_id": "1"
+    },
+    {
+      "id": 2,
+      "product_id": "2"
+    }
+  ],
+  "cart": [
+    {
+      "user_id": 1,
+      "product_id": 1,
+      "quantity": 1,
+      "id": 3
+    },
+    {
+      "user_id": 2,
+      "product_id": 2,
+      "quantity": 1,
+      "id": 4
+    },
+    {
+      "user_id": 1,
+      "product_id": 3,
+      "quantity": 6,
+      "id": 5
+    }
+  ],
+  "coupon": [
+    {
+      "id": 1,
+      "code": "CROCHET1",
+      "discount": "100000"
+    },
+    {
+      "id": 1,
+      "code": "CROCHET2",
+      "discount": "10%"
+    }
+  ]
+}

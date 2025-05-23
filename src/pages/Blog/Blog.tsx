@@ -4,6 +4,8 @@ import BlogCard from "../../components/BlogCard/BlogCard";
 import PageBanner from "../../components/ui/PageBanner";
 import { useTranslation } from "react-i18next";
 import CustomPagination from "../../components/ui/CustomPagination";
+import axios from "axios";
+import useDebounce from "../../hooks/useDebounce";
 
 interface BlogProps {
     id: number;
@@ -14,38 +16,24 @@ interface BlogProps {
 
 function Blog() {
     const { t } = useTranslation();
-    
-    const blogs: BlogProps[] = [
-        { id: 1, image: "/blog1.jpg", title: "How to crochet a table lamps", category: "Crochet" },
-        { id: 2, image: "/blog2.jpg", title: "How to crochet sun and moon", category: "Crochet" },
-        { id: 3, image: "/blog3.jpg", title: "How to crochet jelly fish", category: "Crochet" },
-        { id: 4, image: "/blog2.jpg", title: "How to crochet sun and moon", category: "Crochet" },
-        { id: 5, image: "/blog3.jpg", title: "How to crochet jelly fish", category: "Crochet" },
-        { id: 6, image: "/blog1.jpg", title: "How to crochet a table lamps", category: "Crochet" },
-        { id: 7, image: "/blog2.jpg", title: "How to crochet sun and moon", category: "Crochet" },
-        { id: 8, image: "/blog3.jpg", title: "How to crochet jelly fish", category: "Crochet" },
-        { id: 9, image: "/blog2.jpg", title: "How to crochet sun and moon", category: "Crochet" },
-        { id: 10, image: "/blog1.jpg", title: "How to crochet a table lamps", category: "Crochet" },
-        { id: 11, image: "/blog2.jpg", title: "How to crochet sun and moon", category: "Crochet" },
-        { id: 12, image: "/blog3.jpg", title: "How to crochet jelly fish", category: "Crochet" },
-        { id: 13, image: "/blog1.jpg", title: "How to crochet a table lamps", category: "Crochet" },
-    ];
-
+    const API = process.env.REACT_APP_API_URL;
+    const [blogs, setBlogs] = useState<BlogProps[]>([])    
     const [currentPage, setCurrentPage] = useState(1);
     const [searchValue, setSearchValue] = useState("");
-    const [debouncedSearchValue, setDebouncedSearchValue] = useState(searchValue);
-    const [filteredBlogs, setFilteredBlogs] = useState<BlogProps[]>(blogs);
+    const [filteredBlogs, setFilteredBlogs] = useState<BlogProps[]>([]);
     const pageSize = 9;
 
     useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedSearchValue(searchValue);
-        }, 1000);
+        axios.get(`${API}/blog`) 
+        .then(res => {
+            setBlogs(res.data)
+            setFilteredBlogs(res.data)
+        })
+        .catch(err => console.log(err))
+    },[])
 
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [searchValue]);
+
+    const debouncedSearchValue = useDebounce(searchValue, 1000);
 
     useEffect(() => {
         const filtered = blogs.filter(blog =>

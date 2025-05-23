@@ -54,6 +54,7 @@
 }
 
 .productItem__addCart {
+    cursor: pointer;
     text-decoration: none;
     display: block;
     font-size: 14px;
@@ -72,7 +73,8 @@
 .productItem__action {
     position: absolute;
     bottom: 110px;
-    left: calc(100% / 2 - 80px);
+    /* left: calc(100% / 2 - 80px); */
+    left: calc(100% / 2 - 56px);
     opacity: 0;
     visibility: hidden;
     transform: translateY(50px);

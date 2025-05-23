@@ -11,7 +11,6 @@ const SmoothVideo: React.FC<{ video: string }> = ({ video }) => {
 
   useLayoutEffect(() => {
     setWidth(window.innerWidth/1.8)
-    console.log(window.innerWidth/1.8)
   }, [])
 
   useScrollTriggerOnMount();

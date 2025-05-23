@@ -1,18 +1,28 @@
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
+import { useAppSelector } from '../../hooks/useStore';
+
 
 function Header() {
     const { i18n } = useTranslation();
-    const { isAuthenticated } = useAuth()
+    const { logout, isAuthenticated } = useAuth();
     const navigate = useNavigate()
 
     const changeLanguage = (lang: 'en' | 'vi') => {
         i18n.changeLanguage(lang);
     };
 
+    const cartItems = useAppSelector(state => state.cart.items);
+    const totalQuantity = cartItems.length
+
+  const handleLogout = (e: React.FormEvent) => {
+    e.preventDefault();
+    logout(); 
+    navigate("/login")
+  };
     return (
-        <div style={{ backgroundImage: `url(/bgHeader.png)` }}>
+        <div style={{ backgroundImage: `url(/bgHeader.png)`, height: "82px" }}>
             <div className='container'>
                 <div className='row items-center py-1'>
                     <div className='col-lg-3'>
@@ -60,15 +70,41 @@ function Header() {
                         <ul className='m-0 list-none flex items-center justify-end'>
                             <li className="px-[12px] py-[12px] font-[600] text-[24px]">
                                 {isAuthenticated
-                                ?<i className="fa-regular fa-user"></i>
-                                :<button onClick={() => navigate("/login")} className='uppercase text-[18px] border-2 border-[var(--border-color)] px-[14px] py-[3px] hover:bg-[var(--active-color)] hover:border-[var(--active-color)] hover:text-[#fff]'>Login</button>
+                                    ? 
+                                    <div className='relative group'>
+                                        <i className="fa-regular fa-user cursor-pointer"></i>
+                                        <div className="absolute after:block after:content-[''] after:bg-transparent after:w-[40px] after:h-[5px] bottom-[-1px] right-0"></div>
+                                        <ul className='absolute right-0 text-[16px] hidden group-hover:block pl-0 z-[999] w-[180px] bg-white font-[family-name:(var(--font-Gentium)] rounded-[5px] shadow-[0_3px_8px_rgba(0,0,0,0.25)]'>
+                                                <li>
+                                                    <Link to="/" className='no-underline  text-black hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'>
+                                                        My Account
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/" className='no-underline  text-black hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'>
+                                                        My Wishlist
+                                                    </Link>
+                                                </li>
+                                                <li 
+                                                    className='cursor-pointer hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'
+                                                    onClick={handleLogout}
+                                                >
+                                                    Logout
+                                                </li>
+                                            </ul>
+                                    </div>
+                                    : <button onClick={() => navigate("/login")} className='uppercase font-[family-name:var(--font-Gentium)] text-[18px] text-[var(--primary1-color)] font-[700] border-2 border-[var(--border-color)] px-[14px] py-[3px] hover:bg-[var(--active-color)] hover:border-[var(--active-color)] hover:text-[#fff] rounded-[4px]'>Login</button>
                                 }
                             </li>
                             <li className="relative px-[12px] py-[12px] font-[600] text-[24px]">
-                                <i className="fa-solid fa-cart-shopping"></i>
-                                <div className="absolute flex justify-center border-[1.5px] border-[#fff] items-center top-[5px] right-[1px] bg-[var(--primary2-color)] w-[22px] h-[22px] rounded-[50%]">
-                                    <div className='text-[#fff] text-[12px] leading-[12px]'>10</div>
-                                </div>
+                                <Link to='/cart'>
+                                    <i className="fa-solid fa-cart-shopping text-black" />
+                                </Link>
+                                {totalQuantity > 0 &&
+                                    <div className="absolute flex justify-center border-[1.5px] border-[#fff] items-center top-[5px] right-[1px] bg-[var(--primary2-color)] w-[22px] h-[22px] rounded-[50%]">
+                                        <div className='text-[#fff] text-[12px] leading-[12px]'>{totalQuantity}</div>
+                                    </div>
+                                }
                             </li>
                             <li className="px-[12px] py-[12px] font-[600]">
                                 <div className="relative w-[88px] h-[38px]">
