@@ -31,7 +31,7 @@ function About() {
                 </div>
                 {/* intro */}
                 <div className="flex gap-2">
-                    <img src="/about1.jpg" className="w-[600px] rounded-[12px]"/>
+                    <img src="/me.jpg" className="w-[600px] rounded-[12px]"/>
                     <div className="text-[28px] mt-[12px] font-[family-name:var(--font-Gentium)] grow mx-[24px] text-justify leading-[1.7]"> 
                         <div className="pb-[14px]">{t(`about1`)}</div>
                         <div className="pb-[14px]">{t(`about2`)}</div>
