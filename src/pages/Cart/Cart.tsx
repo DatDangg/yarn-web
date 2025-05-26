@@ -2,81 +2,120 @@ import { Table, TableProps } from "antd"
 import PageBanner from "../../components/ui/PageBanner"
 import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../hooks/useStore"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useCallback } from "react"
 import axios from "axios"
 import { removeFromCart, updateQuantity } from "../../store/slice/cartSlice"
 import useDebounce from "../../hooks/useDebounce"
+import { useNavigate } from "react-router-dom"
+import { ProductProps } from "../../interfaces/product"
 
 interface DataType {
-    key: string,
-    name: string,
-    image: string,
-    price: number,
-    discount?: number,
-    quantity: number,
-    total: number,
+    key: string
+    name: string
+    image: string
+    price: number
+    discount?: number
+    quantity: number
+    total: number
 }
-
-interface ProductProps {
-    image: string,
-    name: string,
-    price: number,
-    quantity: number,
-    discount?: number,
-    id: number,
-}
-
 
 function Cart() {
     const { t } = useTranslation()
-    const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const API = process.env.REACT_APP_API_URL
+
     const cartItems = useAppSelector(state => state.cart.items)
     const [products, setProducts] = useState<ProductProps[]>([])
-    const [localQuantities, setLocalQuantities] = useState<Record<number, number>>({});
+    const [localQuantities, setLocalQuantities] = useState<Record<number, number>>({})
+    const [couponCode, setCouponCode] = useState('')
+    const [couponDiscount, setCouponDiscount] = useState(0)
+    const [couponErr, setCouponErr] = useState('')
 
-    const debouncedQuantities = useDebounce(localQuantities, 500);
+    const debouncedQuantities = useDebounce(localQuantities, 500)
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const promises = cartItems.map(item =>
-                    axios.get(`${API}/product?id=${item.product_id}`)
-                )
-                const responses = await Promise.all(promises)
-                const fetchedProducts = responses.map(res => res.data[0])
-                setProducts(fetchedProducts)
-            } catch (err) {
-                console.log(err)
-            }
+    const fetchProducts = useCallback(async () => {
+        try {
+            const productResponses = await Promise.all(
+                cartItems.map(item => axios.get(`${API}/product?id=${item.product_id}`))
+            )
+            setProducts(productResponses.map(res => res.data[0]))
+        } catch (err) {
+            console.error("Fetch products error:", err)
         }
-
-        fetchProducts()
     }, [cartItems, API])
 
+    useEffect(() => { fetchProducts() }, [fetchProducts])
+
     useEffect(() => {
-        Object.entries(debouncedQuantities).forEach(([id, qty]) => {
-            const item = cartItems.find(i => i.id === Number(id));
-            const product = products.find(p => p.id === item?.product_id);
-            if (!item || !product) return;
+        for (const [id, qty] of Object.entries(debouncedQuantities)) {
+            const item = cartItems.find(i => i.id === Number(id))
+            const product = products.find(p => p.id === item?.product_id)
+            if (!item || !product) continue
 
-            const safeQty = Math.max(1, Math.min(qty, product.quantity));
+            const safeQty = Math.max(1, Math.min(qty, product.quantity))
             if (safeQty !== item.quantity) {
-                dispatch(updateQuantity({ id: Number(id), quantity: safeQty }));
+                dispatch(updateQuantity({ id: Number(item.id), quantity: safeQty }))
             }
-        });
-    }, [debouncedQuantities, cartItems, products, dispatch]);
+        }
+    }, [debouncedQuantities, cartItems, products, dispatch])
 
-    const columns: TableProps<DataType>['columns'] = [
+    const data: DataType[] = useMemo(() =>
+        cartItems.map((item, index) => {
+            const product = products.find(p => p.id === item.product_id)
+            if (!product) return null
+
+            const discount = product.discount ?? 0
+            const discountedPrice = product.price * (1 - discount / 100)
+            const total = Math.round(discountedPrice * item.quantity)
+
+            return {
+                key: `${index}`,
+                name: product.name,
+                image: product.image[0],
+                price: product.price,
+                discount,
+                quantity: item.quantity,
+                total
+            }
+        }).filter(Boolean) as DataType[]
+    , [cartItems, products])
+
+    const grandTotal = useMemo(() => data.reduce((sum, item) => sum + item.total, 0), [data])
+    const shippingCharge = 40000
+    const totalPayment = grandTotal + shippingCharge - couponDiscount
+
+    const handleCouponSubmit = useCallback(async () => {
+        setCouponErr('')
+        try {
+            const res = await axios.get(`${API}/coupon?code=${couponCode}`)
+            const coupon = res.data[0]
+            if (coupon) {
+                setCouponCode('')
+                const discount = coupon.discount
+                const value = discount.includes('%')
+                    ? Math.floor(Number(discount.replace('%', '')) * grandTotal / 100)
+                    : Number(discount)
+                setCouponDiscount(value)
+            } else {
+                setCouponErr(t('discountErr'))
+            }
+        } catch (err) {
+            console.error("Coupon fetch error:", err)
+        }
+    }, [couponCode, grandTotal, API, t])
+
+    const columns: TableProps<DataType>['columns'] = useMemo(() => [
         {
             title: t("table1"),
             dataIndex: 'name',
             key: 'name',
-            render: (record, idx) => {
+            render: (name, _, index) => {
+                const image = data[index]?.image
                 return (
-                    <div className="flex">
-                        <img src={idx.image} className="rounded-[5px] w-[100px] h-[100px] pr-[10px]" alt="product" />
-                        <span className="uppercase text-[18px]">{record}</span>
+                    <div className="flex items-center">
+                        <img src={image} className="rounded-[5px] w-[100px] h-[100px] pr-[10px]" alt="product" />
+                        <span className="uppercase text-[18px]">{name}</span>
                     </div>
                 )
             }
@@ -85,33 +124,34 @@ function Cart() {
             title: t("table2"),
             dataIndex: 'price',
             key: 'price',
-            render: (price: number) => <span className="text-[18px] font-[600]">{price.toLocaleString()}₫</span>,
+            render: price => <span className="text-[18px] font-[600]">{price.toLocaleString()}₫</span>,
         },
         {
             title: t("table3"),
             dataIndex: 'discount',
             key: 'discount',
-            render: (discount?: number) => <span className="text-[18px]">{discount ? `${discount}%` : '0%'}</span>,
+            render: discount => <span className="text-[18px]">{discount ? `${discount}%` : '0%'}</span>,
         },
         {
             title: t("table4"),
             dataIndex: 'quantity',
             key: 'quantity',
-            render: (_, record, index) => {
-                const item = cartItems[index];
-                const productQuantity = products[index]?.quantity ?? 1;
-                const localValue = localQuantities[item.id!] ?? item.quantity;
+            render: (_, __, index) => {
+                const item = cartItems[index]
+                const productQuantity = products[index]?.quantity ?? 1
+                const localValue = localQuantities[item.id!] ?? item.quantity
+
+                const handleQtyChange = (val: number) => {
+                    if (val >= 1 && val <= productQuantity) {
+                        setLocalQuantities(prev => ({ ...prev, [item.id!]: val }))
+                    }
+                }
 
                 return (
                     <div className="flex items-center gap-2">
                         <button
                             className={`bg-[#f6f6f6] ${item.quantity > 1 ? 'cursor-pointer hover:text-[var(--primary2-color)]' : 'hover:cursor-not-allowed'} text-[16px] w-[40px] h-[40px] flex items-center justify-center`}
-                            onClick={() => {
-                                const newQty = item.quantity - 1;
-                                if (newQty >= 1) {
-                                    setLocalQuantities(prev => ({ ...prev, [item.id!]: newQty }));
-                                }
-                            }}
+                            onClick={() => handleQtyChange(item.quantity - 1)}
                         >
                             <i className="fa-solid fa-minus"></i>
                         </button>
@@ -121,95 +161,45 @@ function Cart() {
                             min={1}
                             value={localValue}
                             onChange={e => {
-                                const val = parseInt(e.target.value);
-                                if (!isNaN(val) && val >= 1) {
-                                    setLocalQuantities(prev => ({ ...prev, [item.id!]: val }));
-                                }
+                                const val = parseInt(e.target.value)
+                                if (!isNaN(val)) handleQtyChange(val)
                             }}
                         />
                         <button
                             className={`bg-[#f6f6f6] ${item.quantity < productQuantity ? 'cursor-pointer hover:text-[var(--primary2-color)]' : 'hover:cursor-not-allowed'} text-[16px] w-[40px] h-[40px] flex items-center justify-center`}
-                            onClick={() => {
-                                if (item.quantity < productQuantity) {
-                                    setLocalQuantities(prev => ({ ...prev, [item.id!]: item.quantity + 1 }));
-                                }
-                            }}
+                            onClick={() => handleQtyChange(item.quantity + 1)}
                         >
                             <i className="fa-solid fa-plus"></i>
                         </button>
                     </div>
-                );
-            },
+                )
+            }
         },
         {
             title: t("table5"),
             dataIndex: 'total',
             key: 'total',
-            render: (total: number) => <span className="text-[18px]">{total.toLocaleString()}₫</span>,
+            render: total => <span className="text-[18px]">{total.toLocaleString()}₫</span>,
         },
         {
             title: t("table6"),
             key: 'action',
             render: (_, __, index) => {
-                const item = cartItems[index];
+                const item = cartItems[index]
                 return (
                     <button
                         onClick={() => dispatch(removeFromCart(item.id!))}
-                        className={`bg-[#f6f6f6] hover:text-[var(--primary2-color)] text-[16px] w-[40px] h-[40px] flex items-center justify-center`}
+                        className="bg-[#f6f6f6] hover:text-[var(--primary2-color)] text-[16px] w-[40px] h-[40px] flex items-center justify-center"
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </button>
-                );
+                )
             }
         }
-    ]
-
-    const data: DataType[] = cartItems.map((item, index) => {
-        const product = products.find(p => p.id === item.product_id)
-        if (!product) return null
-
-        const quantity = Number(item.quantity)
-        const discount = product.discount ?? 0
-        const discountedPrice = product.price * (1 - discount / 100)
-        const total = discountedPrice * quantity
-
-        return {
-            key: `${index}`,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            discount,
-            quantity,
-            total: Math.round(total),
-        }
-    }).filter(Boolean) as DataType[]
-
-    const grandTotal = data.reduce((sum, item) => sum + item.total, 0);
-    const shippingCharge = 40000
-    const [couponDiscount, setCouponDiscount] = useState<number>(0)
-    const totalPayment = grandTotal + shippingCharge - couponDiscount
-    const [couponErr, setCouponErr] = useState<string>('')
-    const [couponCode, setCouponCode] = useState<string>('')
-
-    const handleCouponSubmit = async () => {
-        setCouponErr('')
-        try {
-            const res = await axios.get(`${API}/coupon?code=${couponCode}`)
-            if (res.data[0]) {
-                setCouponCode('')
-                const discount = res.data[0].discount
-                if (discount.includes('%')) setCouponDiscount(Number((discount.split('%')[0] * grandTotal / 100).toFixed(0)))
-                else setCouponDiscount(Number(discount))
-            }
-            else setCouponErr(`${t('discountErr')}`)
-        }
-        catch (err) {
-            console.log(err)
-        }
-    }
+    ], [cartItems, products, localQuantities, dispatch, t, data])
 
     return (
-        <div className="mb-[24px]">
+        <div className="mb-[24px] mt-[100px]">
             <PageBanner name="Cart" />
             <div className="relative pt-[28px]">
                 <img className="absolute" src='/line.png' />
@@ -274,15 +264,19 @@ function Cart() {
                                     <div className="text-[var(--primary2-color)] font-[700] text-[24px]">{totalPayment.toLocaleString()}₫</div>
                                 </div>
                             </div>
+                            <div className="mt-[18px]">
+                                <button 
+                                    className="text-[18px] font-[600] rounded-[5px] border-1 border-[var(--border-color)] w-fit px-[18px] py-[6px] float-right hover:border-[var(--primary2-color)] hover:text-[white] hover:bg-[var(--primary2-color)]"
+                                    onClick={() => navigate('/')}
+                                >
+                                    {t("checkout")}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                 </div>
-                {/* <div className="row">
-                    <div className="col-lg-12">
-                        <div className="border-1 h-[500px] border-[red]"></div>
-                    </div>
-                </div> */}
+
             </div>
         </div>
     )

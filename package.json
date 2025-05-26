@@ -30,7 +30,7 @@
     "react-toastify": "^11.0.5",
     "react-use-draggable-scroll": "^0.4.7",
     "redux": "^5.0.1",
-    "swiper": "^11.2.6",
+    "swiper": "^11.2.8",
     "toast": "^0.5.4",
     "web-vitals": "^2.1.4"
   },

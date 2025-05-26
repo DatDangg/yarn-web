@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Lenis from "lenis";
-import useScrollTriggerOnMount from "../../hooks/useScrollTriggerOnMount";
+import useScrollTriggerOnMount from "../../../hooks/useScrollTriggerOnMount";
 
 
 const SmoothVideo: React.FC<{ video: string }> = ({ video }) => {

@@ -1,33 +1,50 @@
-import { useTranslation } from 'react-i18next';
-import { Link, NavLink, useNavigate } from 'react-router';
-import { useAuth } from '../../contexts/AuthContext';
-import { useAppSelector } from '../../hooks/useStore';
-
+import { useTranslation } from 'react-i18next'
+import { Link, NavLink, useNavigate } from 'react-router'
+import { useAuth } from '../../contexts/AuthContext'
+import { useAppSelector } from '../../hooks/useStore'
+import { useEffect, useState } from 'react'
 
 function Header() {
-    const { i18n } = useTranslation();
-    const { logout, isAuthenticated } = useAuth();
+    const { i18n } = useTranslation()
+    const { logout, isAuthenticated } = useAuth()
     const navigate = useNavigate()
+    const [isScrolled, setIsScrolled] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 80) {
+                setIsScrolled(true)
+            } else {
+                setIsScrolled(false)
+            }
+        }
+
+        window.addEventListener("scroll", handleScroll)
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [])
 
     const changeLanguage = (lang: 'en' | 'vi') => {
-        i18n.changeLanguage(lang);
-    };
+        i18n.changeLanguage(lang)
+    }
 
-    const cartItems = useAppSelector(state => state.cart.items);
+    const cartItems = useAppSelector(state => state.cart.items)
     const totalQuantity = cartItems.length
 
-  const handleLogout = (e: React.FormEvent) => {
-    e.preventDefault();
-    logout(); 
-    navigate("/login")
-  };
+    const handleLogout = (e: React.FormEvent) => {
+        e.preventDefault()
+        logout()
+        navigate("/login")
+    }
     return (
-        <div style={{ backgroundImage: `url(/bgHeader.png)`, height: "82px" }}>
+        <div
+            style={{ backgroundImage: !isScrolled ? `url(/bgHeader.png), linear-gradient(white, white)` : "linear-gradient(white, white)", height: isScrolled ? "70px" : "100px", transition: 'all 0.3s ease' }}
+            className='fixed top-0 left-0 right-0 z-[20]'
+        >
             <div className='container'>
                 <div className='row items-center py-1'>
                     <div className='col-lg-3'>
                         <Link to='/'>
-                            <img src='/logo.png' className='w-[230px] cursor-pointer'></img>
+                            <img src='/logo.png' className='max-w-[230px] cursor-pointer' style={{ height: isScrolled ? "64px" : "" }}></img>
                         </Link>
                     </div>
                     <div className='col-lg-7 flex justify-center'>
@@ -62,7 +79,7 @@ function Header() {
                                         ? 'text-[var(--active-color)] no-underline'
                                         : 'text-[var(--primary1-color)] no-underline hover:text-[var(--active-color)] hover:cursor-pointer'
                                 }
-                                    to={"/faq"}>FAQ</NavLink>
+                                    to={"/product"}>Product</NavLink>
                             </li>
                         </ul>
                     </div>
@@ -70,28 +87,28 @@ function Header() {
                         <ul className='m-0 list-none flex items-center justify-end'>
                             <li className="px-[12px] py-[12px] font-[600] text-[24px]">
                                 {isAuthenticated
-                                    ? 
+                                    ?
                                     <div className='relative group'>
                                         <i className="fa-regular fa-user cursor-pointer"></i>
                                         <div className="absolute after:block after:content-[''] after:bg-transparent after:w-[40px] after:h-[5px] bottom-[-1px] right-0"></div>
-                                        <ul className='absolute right-0 text-[16px] hidden group-hover:block pl-0 z-[999] w-[180px] bg-white font-[family-name:(var(--font-Gentium)] rounded-[5px] shadow-[0_3px_8px_rgba(0,0,0,0.25)]'>
-                                                <li>
-                                                    <Link to="/" className='no-underline  text-black hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'>
-                                                        My Account
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link to="/" className='no-underline  text-black hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'>
-                                                        My Wishlist
-                                                    </Link>
-                                                </li>
-                                                <li 
-                                                    className='cursor-pointer hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'
-                                                    onClick={handleLogout}
-                                                >
-                                                    Logout
-                                                </li>
-                                            </ul>
+                                        <ul className='absolute right-0 text-[16px] hidden group-hover:block pl-0 z-[10] w-[180px] bg-white font-[family-name:(var(--font-Gentium)] rounded-[5px] shadow-[0_3px_8px_rgba(0,0,0,0.25)]'>
+                                            <li>
+                                                <Link to="/" className='no-underline  text-black hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'>
+                                                    My Account
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to="/wishlist" className='no-underline  text-black hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'>
+                                                    My Wishlist
+                                                </Link>
+                                            </li>
+                                            <li
+                                                className='cursor-pointer hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'
+                                                onClick={handleLogout}
+                                            >
+                                                Logout
+                                            </li>
+                                        </ul>
                                     </div>
                                     : <button onClick={() => navigate("/login")} className='uppercase font-[family-name:var(--font-Gentium)] text-[18px] text-[var(--primary1-color)] font-[700] border-2 border-[var(--border-color)] px-[14px] py-[3px] hover:bg-[var(--active-color)] hover:border-[var(--active-color)] hover:text-[#fff] rounded-[4px]'>Login</button>
                                 }
@@ -141,8 +158,9 @@ function Header() {
                     </div>
                 </div>
             </div>
+            
         </div>
-    );
+    )
 }
 
-export default Header;
+export default Header

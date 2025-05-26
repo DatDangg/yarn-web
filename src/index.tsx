@@ -19,6 +19,8 @@ import { store } from './store/store';
 import { ToastContainer } from 'react-toastify';
 import Cart from './pages/Cart/Cart';
 import AppInitializer from './components/ui/AppInitializer';
+import WishList from './pages/WishList/WishList';
+import ProductList from './pages/ProductList/ProductList';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -43,6 +45,8 @@ root.render(
               <Route path="/about" element={<About />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/wishlist" element={<WishList />} />
+              <Route path="/product" element={<ProductList />} />
             </Route>
           </Routes>
         </BrowserRouter>

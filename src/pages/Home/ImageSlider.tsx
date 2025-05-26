@@ -11,7 +11,6 @@ interface props {
 
 const ImageSlider:React.FC<props> = ({ images }) => {
   const [height, setHeight] = useState<any>(0)
-    
       useLayoutEffect(() => {
         setHeight(window.innerHeight - 12 - 82) 
       }, [])

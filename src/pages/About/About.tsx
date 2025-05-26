@@ -1,14 +1,14 @@
 import { useTranslation, Trans } from "react-i18next";
 import CustomSVG from "../../components/ui/CustomSVG"
 import PageBanner from "../../components/ui/PageBanner"
-import SmoothText from "../../components/ui/SmoothText"
-import SmoothVideo from "../../components/ui/SmoothVideo";
-import SmoothImageSlider from "../../components/ui/SmoothImage";
+import SmoothText from "../../components/ui/Smooth/SmoothText"
+import SmoothVideo from "../../components/ui/Smooth/SmoothVideo";
+import SmoothImageSlider from "../../components/ui/Smooth/SmoothImage";
 
 function About() {
     const { t } = useTranslation();
     return (
-        <div className="mb-[24px]" id="about_me">
+        <div className="mb-[24px] mt-[100px]" id="about_me">
             <PageBanner name="About me" />
             <div className="relative pt-[28px]">
                 <img className="absolute" src='/line.png' />
@@ -62,7 +62,7 @@ function About() {
                 <div className="row bg-[pink] relative" style={{ margin: "36px 0" }}>
                     <div
                         style={{ padding: "0 200px" }}
-                        className="absolute font-[family-name:var(--font-Gentium)] font-[600] top-0 bottom-0 left-0 right-0 w-fit h-fit my-auto text-[32px] text-center z-[999]"
+                        className="absolute font-[family-name:var(--font-Gentium)] font-[600] top-0 bottom-0 left-0 right-0 w-fit h-fit my-auto text-[32px] text-center z-[5]"
                     >
                         <i>" {t('quote')} "</i>
                     </div>

@@ -47,25 +47,33 @@ export const removeFromCart = createAsyncThunk<number, number>(
 
 export const addToCartServer = createAsyncThunk<
   CartItem, // Return type
-  { user_id: number; product_id: number } // Payload
+  { user_id: number; product_id: number, quantity?: number } // Payload
 >(
   'cart/addToCartServer',
-  async ({ user_id, product_id }) => {
+  async ({ user_id, product_id, quantity }) => {
     const res = await axios.get(`${API}/cart`);
     const existing = res.data.find(
       (item: CartItem) => item.product_id === product_id && item.user_id === user_id
     );
 
     if (existing) {
-      const updated = await axios.patch(`${API}/cart/${existing.id}`, {
-        quantity: existing.quantity + 1,
-      });
-      return updated.data;
+      if (quantity && quantity > 1) {
+        const updated = await axios.patch(`${API}/cart/${existing.id}`, {
+          quantity: existing.quantity + quantity,
+        });
+        return updated.data;
+      } else {
+        const updated = await axios.patch(`${API}/cart/${existing.id}`, {
+          quantity: existing.quantity + 1,
+        });
+        return updated.data;
+      }
+      
     } else {
       const created = await axios.post(`${API}/cart`, {
         user_id,
         product_id,
-        quantity: 1,
+        quantity: quantity || 1,
       });
       return created.data;
     }
@@ -77,21 +85,6 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<{ product_id: number; user_id: number }>) => {
-      const existing = state.items.find(
-        i => i.product_id === action.payload.product_id && i.user_id === action.payload.user_id
-      );
-
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        state.items.push({
-          product_id: action.payload.product_id,
-          user_id: action.payload.user_id,
-          quantity: 1,
-        });
-      }
-    },
     increaseQuantity: (state, action: PayloadAction<{ product_id: number; user_id: number }>) => {
       const item = state.items.find(
         i => i.product_id === action.payload.product_id && i.user_id === action.payload.user_id
@@ -136,5 +129,5 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, increaseQuantity, decreaseQuantity } = cartSlice.actions;
+export const { increaseQuantity, decreaseQuantity } = cartSlice.actions;
 export default cartSlice.reducer;

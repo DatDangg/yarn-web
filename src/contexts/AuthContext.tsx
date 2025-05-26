@@ -1,12 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { useAppDispatch } from '../hooks/useStore';
 import { fetchCart } from '../store/slice/cartSlice';
-
-interface UserProps {
-  id: number,
-  username: string,
-  token?: string
-}
+import { UserProps } from '../interfaces/user';
 
 interface AuthContextType {
   token: string | null;

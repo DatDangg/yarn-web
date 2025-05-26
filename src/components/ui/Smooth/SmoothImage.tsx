@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import useScrollTriggerOnMount from "../../hooks/useScrollTriggerOnMount";
+import useScrollTriggerOnMount from "../../../hooks/useScrollTriggerOnMount";
 
 interface SmoothImageSliderProps {
   images: string[];

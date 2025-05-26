@@ -1,8 +1,4 @@
-interface BlogCardProps {
-    title: string,
-    image: string,
-    category: string
-}
+import { BlogCardProps } from "../../interfaces/blog"
 
 const BlogCard:React.FC<BlogCardProps> = ({title, image, category}) => {
     return (

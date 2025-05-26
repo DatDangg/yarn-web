@@ -6,13 +6,7 @@ import { useTranslation } from "react-i18next";
 import CustomPagination from "../../components/ui/CustomPagination";
 import axios from "axios";
 import useDebounce from "../../hooks/useDebounce";
-
-interface BlogProps {
-    id: number;
-    image: string;
-    title: string;
-    category: string;
-}
+import { BlogProps } from "../../interfaces/blog";
 
 function Blog() {
     const { t } = useTranslation();
@@ -32,7 +26,6 @@ function Blog() {
         .catch(err => console.log(err))
     },[])
 
-
     const debouncedSearchValue = useDebounce(searchValue, 1000);
 
     useEffect(() => {
@@ -47,7 +40,7 @@ function Blog() {
     const currentBlogs = filteredBlogs.slice(startIndex, startIndex + pageSize);
 
     return (
-        <div className="mb-[24px]">
+        <div className="mb-[24px] mt-[100px]">
             <PageBanner name="Blog" />
 
             <div className="relative pt-[28px]">
@@ -69,7 +62,7 @@ function Blog() {
                             <label
                                 htmlFor="search"
                                 className="absolute left-3 top-[-18px] text-[20px] text-gray-500 transition-all duration-200 font-[family-name:var(--font-Gentium)] bg-white px-1 pointer-events-none
-                                           peer-placeholder-shown:top-[22%] peer-placeholder-shown:text-base peer-placeholder-shown:text-[24px] peer-placeholder-shown:text-[var(--text-color)] peer-placeholder-shown:font-[family-name:var(--font-Dancing)]
+                                           peer-placeholder-shown:top-[18%] peer-placeholder-shown:text-[22px] peer-placeholder-shown:text-[24px] peer-placeholder-shown:text-[var(--text-color)] peer-placeholder-shown:font-[family-name:var(--font-Dancing)]
                                            peer-focus:font-[family-name:var(--font-Gentium)] peer-focus:top-[-11px] peer-focus:leading-[20px] peer-focus:font-[500] peer-focus:text-[20px] peer-focus:text-[var(--active-color)] "
                             >
                                 {t("blogFind")}
