@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -47,11 +48,11 @@ export const removeFromCart = createAsyncThunk<number, number>(
 
 export const addToCartServer = createAsyncThunk<
   CartItem, // Return type
-  { user_id: number; product_id: number; quantity?: number }, // Payload type
+  { user_id: number; product_id: number; quantity?: string, t: (key: string) => string  }, // Payload type
   { rejectValue: string } // Error payload
 >(
   "cart/addToCartServer",
-  async ({ user_id, product_id, quantity = 1 }, { rejectWithValue }) => {
+  async ({ user_id, product_id, quantity = '1', t }, { rejectWithValue }) => {
     try {
       const [cartRes, productRes] = await Promise.all([
         axios.get(`${API}/cart`),
@@ -64,15 +65,14 @@ export const addToCartServer = createAsyncThunk<
 
       const stock = productRes.data.stock;
 
-      if (quantity <= 0) {
-        return rejectWithValue("Số lượng không hợp lệ");
+      if (Number(quantity) <= 0) {
+        return rejectWithValue(t("cartError1"));
       }
 
       if (existing) {
-        const newQuantity = existing.quantity + quantity;
-
+        const newQuantity = existing.quantity + Number(quantity);
         if (newQuantity > stock) {
-          return rejectWithValue("Vượt quá số lượng tồn kho");
+          return rejectWithValue(t("cartError2"));
         }
 
         const updated = await axios.patch(`${API}/cart/${existing.id}`, {
@@ -90,7 +90,7 @@ export const addToCartServer = createAsyncThunk<
         return created.data;
       }
     } catch (error) {
-      return rejectWithValue("Có lỗi xảy ra khi thêm vào giỏ hàng");
+      return rejectWithValue(t("cartError3"));
     }
   }
 );

@@ -8,13 +8,12 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { addToWishlist, fetchWishlist, removeFromWishlist } from "../../store/slice/wishlistSlice";
+import { addToWishlist, removeFromWishlist } from "../../store/slice/wishlistSlice";
 import { useNavigate } from "react-router-dom";
 import { addToCartServer } from "../../store/slice/cartSlice";
 import ProductModal from "../../components/ui/ProductModal";
 import { ProductProps } from "../../interfaces/product";
 import { BlogProps } from "../../interfaces/blog";
-
 
 function Home() {
     const { t } = useTranslation();
@@ -26,7 +25,7 @@ function Home() {
     const wishlist = useSelector((state: RootState) => state.wishlist.items);
     const navigate = useNavigate()
     const [showModal, setShowModal] = useState({ state: false, product_id: 1 })
-    const [quantity, setQuantity] = useState<number>(1)
+    const [quantity, setQuantity] = useState<string>('1')
 
     const [startIndex, setStartIndex] = useState(0);
     const maxVisible = 4;
@@ -67,20 +66,6 @@ function Home() {
                 className: "text-[#F45D96]",
                 progressClassName: "bg-[#F45D96]",
             });
-        }
-    };
-
-
-    const handleAddToCart = async (id: any) => {
-        if (!user?.id) return;
-        try {
-            await dispatch(addToCartServer({ user_id: user.id, product_id: id, quantity: quantity }));
-            setQuantity(1)
-            setShowModal({ state: false, product_id: 1 })
-            toast.success(`${t("addCart")}`);
-        } catch (err) {
-            console.error(err);
-            toast.error(`${t("errorOccurred")}`);
         }
     };
 
@@ -179,6 +164,12 @@ function Home() {
                                         addWishList={() => handleToggleWishlist(product.id)}
                                         removeWishlist={() => handleToggleWishlist(product.id)}
                                         open={() => setShowModal({ state: true, product_id: product.id })}
+                                        quantity={quantity}
+                                        setQuantity={setQuantity}
+                                        onAddToCartSuccess={() => {
+                                            setQuantity('1');
+                                            setShowModal({ state: false, product_id: 1 });
+                                        }}
                                     />
                                 </div>
                             ))}
@@ -212,12 +203,14 @@ function Home() {
                     quantity={quantity}
                     setQuantity={setQuantity}
                     onClose={() => {
-                        setQuantity(1);
+                        setQuantity('1');
                         setShowModal({ state: false, product_id: 1 });
                     }}
-                    onAddToCart={() => handleAddToCart(showModal.product_id)}
+                    onAddToCartSuccess={() => {
+                        setQuantity('1');
+                        setShowModal({ state: false, product_id: 1 });
+                    }}
                 />
-
             )}
         </div>
     );

@@ -15,21 +15,32 @@ const ProductCard: React.FC<ProductCardProps> = ({
     id,
     removeWishlist,
     addWishList,
-    open
+    open,
+    quantity = '1',
+    setQuantity,
+    onAddToCartSuccess
 }) => {
     const dispatch = useAppDispatch();
-    const { user } = useAuth()
-    const { t } = useTranslation()
+    const { user } = useAuth();
+    const { t } = useTranslation();
 
     const handleAddToCart = async () => {
         if (!user?.id) return;
         try {
-            await dispatch(addToCartServer({ user_id: user.id, product_id: id }))
-            .unwrap()
+            await dispatch(addToCartServer({
+                user_id: user.id,
+                product_id: id,
+                quantity,
+                t
+            })).unwrap();
+
             toast.success(`${t("addCart")}`);
+
+            if (setQuantity) setQuantity('1');
+            if (onAddToCartSuccess) onAddToCartSuccess();
         } catch (err: any) {
             console.error(err);
-            toast.error(err || t("errorOccurred")); 
+            toast.error(err || t("errorOccurred"));
         }
     };
 
@@ -41,30 +52,25 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 <a href="#">{name}</a>
             </div>
             <div className={styles.productItem__price}>{price.toLocaleString()}đ</div>
-            <div
-                onClick={handleAddToCart}
-                className={styles.productItem__addCart}
-            >
+            <div onClick={handleAddToCart} className={styles.productItem__addCart}>
                 Add to Cart
             </div>
             <div className={styles.productItem__action}>
                 <i className="fa-solid fa-magnifying-glass" onClick={open}></i>
-                {/* <i className="fa-solid fa-cart-shopping"></i> */}
-                {wishlist ?
-                    <i 
+                {wishlist ? (
+                    <i
                         className="fa-solid fa-heart text-[#F45D96]"
-                        onClick={() => removeWishlist(id)}
+                        onClick={() => removeWishlist?.(id)}
                     ></i>
-                    : 
+                ) : (
                     <i
                         className="fa-regular fa-heart"
                         onClick={() => addWishList?.(id)}
                     ></i>
-                }
-
-
+                )}
             </div>
         </div>
-    )
-}
+    );
+};
+
 export default ProductCard;

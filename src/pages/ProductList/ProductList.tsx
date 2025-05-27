@@ -6,8 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { AppDispatch, RootState } from "../../store/store";
-import { addToWishlist, fetchWishlist, removeFromWishlist } from "../../store/slice/wishlistSlice";
-import { addToCartServer } from "../../store/slice/cartSlice";
+import { addToWishlist, removeFromWishlist } from "../../store/slice/wishlistSlice";
 import { useTranslation } from "react-i18next";
 import ProductModal from "../../components/ui/ProductModal";
 import { ProductProps } from "../../interfaces/product";
@@ -28,7 +27,7 @@ function ProductList() {
     const debouncedSearchValue = useDebounce(searchValue, 1000);
 
     const [showModal, setShowModal] = useState({ state: false, product_id: 1 });
-    const [quantity, setQuantity] = useState<number>(1);
+    const [quantity, setQuantity] = useState<string>('1');
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 12;
 
@@ -73,27 +72,10 @@ function ProductList() {
         }
     };
 
-    const handleAddToCart = async (id: number) => {
-        if (!user?.id) return;
-        try {
-            await dispatch(addToCartServer({ user_id: user.id, product_id: id, quantity }))
-                .unwrap(); 
-
-            setQuantity(1);
-            setShowModal({ state: false, product_id: 1 });
-            toast.success(`${t("addCart")}`);
-        } catch (err: any) {
-            console.error(err);
-            toast.error(err || t("errorOccurred")); 
-        }
-    };
-
-
     const currentProducts = useMemo(() => {
         const startIndex = (currentPage - 1) * pageSize;
         return filteredProducts.slice(startIndex, startIndex + pageSize);
     }, [filteredProducts, currentPage]);
-
 
     return (
         <div className="mt-[100px] mb-[24px]">
@@ -143,6 +125,12 @@ function ProductList() {
                                             addWishList={() => handleToggleWishlist(product.id)}
                                             removeWishlist={() => handleToggleWishlist(product.id)}
                                             open={() => setShowModal({ state: true, product_id: product.id })}
+                                            quantity={quantity}
+                                            setQuantity={setQuantity}
+                                            onAddToCartSuccess={() => {
+                                                setQuantity('1');
+                                                setShowModal({ state: false, product_id: 1 });
+                                            }}
                                         />
                                     </div>
                                 ))}
@@ -162,8 +150,6 @@ function ProductList() {
                         </div>
                     }
                 </div>
-
-
             </div>
 
             {showModal.state && (
@@ -173,10 +159,13 @@ function ProductList() {
                     quantity={quantity}
                     setQuantity={setQuantity}
                     onClose={() => {
-                        setQuantity(1);
+                        setQuantity('1');
                         setShowModal({ state: false, product_id: 1 });
                     }}
-                    onAddToCart={() => handleAddToCart(showModal.product_id)}
+                    onAddToCartSuccess={() => {
+                        setQuantity('1');
+                        setShowModal({ state: false, product_id: 1 });
+                    }}
                 />
             )}
         </div>

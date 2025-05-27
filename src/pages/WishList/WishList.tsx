@@ -4,15 +4,12 @@ import PageBanner from "../../components/ui/PageBanner";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
-
 import { toast } from "react-toastify";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchWishlist, removeFromWishlist } from "../../store/slice/wishlistSlice";
+import { removeFromWishlist } from "../../store/slice/wishlistSlice";
 import { ProductProps } from "../../interfaces/product";
 import { useTranslation } from "react-i18next";
 import ProductModal from "../../components/ui/ProductModal";
-import { addToCartServer } from "../../store/slice/cartSlice";
-
 
 function WishList() {
     const API = process.env.REACT_APP_API_URL;
@@ -21,7 +18,7 @@ function WishList() {
     const wishlist = useSelector((state: RootState) => state.wishlist.items);
     const [products, setProducts] = useState<ProductProps[]>([]);
     const [showModal, setShowModal] = useState({ state: false, product_id: 1 })
-    const [quantity, setQuantity] = useState<number>(1)
+    const [quantity, setQuantity] = useState<string>('1')
     const { t } = useTranslation()
 
     const fetchProducts = async () => {
@@ -33,21 +30,6 @@ function WishList() {
             setProducts(productsData);
         } catch (err) {
             console.log(err);
-        }
-    };
-
-    const handleAddToCart = async (id: number) => {
-        if (!user?.id) return;
-        try {
-            await dispatch(addToCartServer({ user_id: user.id, product_id: id, quantity }))
-                .unwrap(); 
-
-            setQuantity(1);
-            setShowModal({ state: false, product_id: 1 });
-            toast.success(`${t("addCart")}`);
-        } catch (err: any) {
-            console.error(err);
-            toast.error(err || t("errorOccurred")); 
         }
     };
 
@@ -67,7 +49,6 @@ function WishList() {
             });
         }
     };
-
 
     return (
         <div className="mt-[100px]">
@@ -89,7 +70,14 @@ function WishList() {
                                 id={product.id}
                                 removeWishlist={() => handleToggleWishlist(product.id)}
                                 open={() => setShowModal({ state: true, product_id: product.id })}
+                                quantity={quantity}
+                                setQuantity={setQuantity}
+                                onAddToCartSuccess={() => {
+                                    setQuantity('1');
+                                    setShowModal({ state: false, product_id: 1 });
+                                }}
                             />
+
                         </div>
                     ))}
                 </div>
@@ -101,12 +89,14 @@ function WishList() {
                     quantity={quantity}
                     setQuantity={setQuantity}
                     onClose={() => {
-                        setQuantity(1);
+                        setQuantity('1');
                         setShowModal({ state: false, product_id: 1 });
                     }}
-                    onAddToCart={() => handleAddToCart(showModal.product_id)}
+                    onAddToCartSuccess={() => {
+                        setQuantity('1');
+                        setShowModal({ state: false, product_id: 1 });
+                    }}
                 />
-
             )}
         </div>
     );

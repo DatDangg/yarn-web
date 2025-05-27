@@ -11,10 +11,11 @@ export interface ProductProps {
 export interface ProductModalProps {
     show: boolean;
     product: ProductProps | null;
-    quantity: number;
-    setQuantity: (val: number) => void;
+    quantity: string;
+    setQuantity: (val: string) => void;
     onClose: () => void;
-    onAddToCart: () => void;
+    onAddToCart?: () => void;
+    onAddToCartSuccess?: () => void
 }
 
 export interface ProductCardProps {
@@ -27,4 +28,7 @@ export interface ProductCardProps {
     removeWishlist: (id: number) => void,
     addWishList?: (id: number) => void,
     open?: () => void
+    quantity?: string;
+    setQuantity?: React.Dispatch<React.SetStateAction<string>>;
+    onAddToCartSuccess?: () => void;
 }

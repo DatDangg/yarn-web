@@ -49,6 +49,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   const pageNumbers = generatePageNumbers();
 
   const handlePageClick = (page: number | string) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     if (typeof page === "number" && page !== currentPage) {
       onChange(page);
     }

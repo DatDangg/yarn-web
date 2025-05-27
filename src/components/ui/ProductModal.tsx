@@ -2,6 +2,11 @@ import React from "react";
 import GallerySwiper from "../ui/GallerySwiper";
 import { ProductModalProps } from "../../interfaces/product";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../contexts/AuthContext";
+import { addToCartServer } from "../../store/slice/cartSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { toast } from "react-toastify";
 
 const ProductModal: React.FC<ProductModalProps> = ({
     show,
@@ -9,14 +14,31 @@ const ProductModal: React.FC<ProductModalProps> = ({
     quantity,
     setQuantity,
     onClose,
-    onAddToCart,
+    onAddToCartSuccess,
 }) => {
+    const { user } = useAuth();
     const { t } = useTranslation()
+    const dispatch = useDispatch<AppDispatch>();
     if (!show || !product) return null;
 
     const discountedPrice = product.discount
         ? Number((product.price * (1 - product.discount / 100)).toFixed(0))
         : product.price;
+
+    const onAddToCart = async (id: number) => {
+        if (!user?.id) return;
+        try {
+            await dispatch(addToCartServer({ user_id: user.id, product_id: id, quantity, t }))
+                .unwrap();
+
+            setQuantity('1');
+            if (onAddToCartSuccess) onAddToCartSuccess();
+            toast.success(`${t("addCart")}`);
+        } catch (err: any) {
+            console.error(err);
+            toast.error(err || t("errorOccurred"));
+        }
+    };
 
     return (
         <div
@@ -57,16 +79,17 @@ const ProductModal: React.FC<ProductModalProps> = ({
                                 className="rounded-[5px] text-[20px] border w-[40px] h-[40px] text-center border-[var(--border-color)] outline-[var(--outline-color)]"
                                 value={quantity}
                                 type="number"
-                                min={1}
+                                // min={1}
                                 onChange={(e) => {
-                                    if (Number(e.target.value) === 0 ) setQuantity(1)
-                                    else if (Number(e.target.value) > product.stock) setQuantity(product.stock)
-                                    else setQuantity(Number(e.target.value))
+                                    if (e.target.value === '0' ) setQuantity('1')
+                                    else if (Number(e.target.value) > product.stock) setQuantity(String(product.stock))
+                                    else setQuantity(e.target.value)
                                 }}
+                                onBlur={(e) => {if (e.target.value === '' ) setQuantity('1')}}
                             />
                             <button
                                 className=" rounded-[5px] border bg-[var(--border-color)] hover:border-[var(--primary2-color)] hover:bg-[var(--primary2-color)] uppercase px-[24px] ml-[12px] hover:text-white font-[600]"
-                                onClick={onAddToCart}
+                                onClick={() => onAddToCart(product.id)}
                             >
                                 Add to cart
                             </button>

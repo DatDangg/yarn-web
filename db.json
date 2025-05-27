@@ -223,36 +223,11 @@
   "wishlist": [
     {
       "user_id": 1,
-      "product_id": 2,
+      "product_id": 3,
       "id": 1
     }
   ],
-  "cart": [
-    {
-      "user_id": 2,
-      "product_id": 2,
-      "quantity": 1,
-      "id": 4
-    },
-    {
-      "user_id": 1,
-      "product_id": 2,
-      "quantity": 25,
-      "id": 5
-    },
-    {
-      "user_id": 1,
-      "product_id": 1,
-      "quantity": 24,
-      "id": 6
-    },
-    {
-      "user_id": 1,
-      "product_id": 3,
-      "quantity": 1,
-      "id": 7
-    }
-  ],
+  "cart": [],
   "coupon": [
     {
       "id": 1,

@@ -54,7 +54,7 @@ function Cart() {
             if (!item || !product) continue
 
             const safeQty = Math.max(1, Math.min(qty, product.stock))
-            if (safeQty !== item.quantity) {
+            if (safeQty !== Number(item.quantity)) {
                 dispatch(updateQuantity({ id: Number(item.id), quantity: safeQty }))
             }
         }
@@ -67,7 +67,7 @@ function Cart() {
 
             const discount = product.discount ?? 0
             const discountedPrice = product.price * (1 - discount / 100)
-            const total = Math.round(discountedPrice * item.quantity)
+            const total = Math.round(discountedPrice * Number(item.quantity))
 
             return {
                 key: `${index}`,
@@ -75,11 +75,11 @@ function Cart() {
                 image: product.image[0],
                 price: product.price,
                 discount,
-                quantity: item.quantity,
+                quantity: Number(item.quantity),
                 total
             }
         }).filter(Boolean) as DataType[]
-    , [cartItems, products])
+        , [cartItems, products])
 
     const grandTotal = useMemo(() => data.reduce((sum, item) => sum + item.total, 0), [data])
     const shippingCharge = 40000
@@ -138,36 +138,35 @@ function Cart() {
             key: 'quantity',
             render: (_, __, index) => {
                 const item = cartItems[index]
-                const productQuantity = products[index]?.stock ?? 1
-                const localValue = localQuantities[item.id!] ?? item.quantity
+                const productStock = products[index]?.stock ?? 1
+                const localValue = localQuantities[item.id!] ?? Number(item.quantity)
 
-                const handleQtyChange = (val: number) => {
-                    if (val >= 1 && val <= productQuantity) {
-                        setLocalQuantities(prev => ({ ...prev, [item.id!]: val }))
-                    }
+                const handleQtyChange = (val: string) => {
+                    if (val === '0') setLocalQuantities(prev => ({ ...prev, [item.id!]: 1 }))
+                    else if (Number(val) > productStock) setLocalQuantities(prev => ({ ...prev, [item.id!]: productStock }))
+                    else setLocalQuantities(prev => ({ ...prev, [item.id!]: Number(val) }))
                 }
 
                 return (
                     <div className="flex items-center gap-2">
                         <button
-                            className={`bg-[#f6f6f6] ${item.quantity > 1 ? 'cursor-pointer hover:text-[var(--primary2-color)]' : 'hover:cursor-not-allowed'} text-[16px] w-[40px] h-[40px] flex items-center justify-center`}
-                            onClick={() => handleQtyChange(item.quantity - 1)}
+                            className={`bg-[#f6f6f6] ${Number(item.quantity) > 1 ? 'cursor-pointer hover:text-[var(--primary2-color)]' : 'hover:cursor-not-allowed'} text-[16px] w-[40px] h-[40px] flex items-center justify-center`}
+                            onClick={() => handleQtyChange(String(Number(item.quantity) - 1))}
                         >
                             <i className="fa-solid fa-minus"></i>
                         </button>
                         <input
                             className="w-[40px] h-[40px] text-[16px] bg-[#f6f6f6] text-center font-[600] outline-[var(--outline-color)]"
                             type="number"
-                            min={1}
-                            value={localValue}
-                            onChange={e => {
-                                const val = parseInt(e.target.value)
-                                if (!isNaN(val)) handleQtyChange(val)
+                            value={localValue || ''}
+                            onBlur={e => {
+                                if (e.target.value === '') handleQtyChange('1')
                             }}
+                            onChange={e => handleQtyChange(e.target.value)}
                         />
                         <button
-                            className={`bg-[#f6f6f6] ${item.quantity < productQuantity ? 'cursor-pointer hover:text-[var(--primary2-color)]' : 'hover:cursor-not-allowed'} text-[16px] w-[40px] h-[40px] flex items-center justify-center`}
-                            onClick={() => handleQtyChange(item.quantity + 1)}
+                            className={`bg-[#f6f6f6] ${Number(item.quantity) < productStock ? 'cursor-pointer hover:text-[var(--primary2-color)]' : 'hover:cursor-not-allowed'} text-[16px] w-[40px] h-[40px] flex items-center justify-center`}
+                            onClick={() => handleQtyChange(String(Number(item.quantity) + 1))}
                         >
                             <i className="fa-solid fa-plus"></i>
                         </button>
@@ -265,7 +264,7 @@ function Cart() {
                                 </div>
                             </div>
                             <div className="mt-[18px]">
-                                <button 
+                                <button
                                     className="text-[18px] font-[600] rounded-[5px] border-1 border-[var(--border-color)] w-fit px-[18px] py-[6px] float-right hover:border-[var(--primary2-color)] hover:text-[white] hover:bg-[var(--primary2-color)]"
                                     onClick={() => navigate('/')}
                                 >
