@@ -47,35 +47,50 @@ export const removeFromCart = createAsyncThunk<number, number>(
 
 export const addToCartServer = createAsyncThunk<
   CartItem, // Return type
-  { user_id: number; product_id: number, quantity?: number } // Payload
+  { user_id: number; product_id: number; quantity?: number }, // Payload type
+  { rejectValue: string } // Error payload
 >(
-  'cart/addToCartServer',
-  async ({ user_id, product_id, quantity }) => {
-    const res = await axios.get(`${API}/cart`);
-    const existing = res.data.find(
-      (item: CartItem) => item.product_id === product_id && item.user_id === user_id
-    );
+  "cart/addToCartServer",
+  async ({ user_id, product_id, quantity = 1 }, { rejectWithValue }) => {
+    try {
+      const [cartRes, productRes] = await Promise.all([
+        axios.get(`${API}/cart`),
+        axios.get(`${API}/product/${product_id}`),
+      ]);
 
-    if (existing) {
-      if (quantity && quantity > 1) {
+      const existing = cartRes.data.find(
+        (item: CartItem) => item.product_id === product_id && item.user_id === user_id
+      );
+
+      const stock = productRes.data.stock;
+
+      if (quantity <= 0) {
+        return rejectWithValue("Số lượng không hợp lệ");
+      }
+
+      if (existing) {
+        const newQuantity = existing.quantity + quantity;
+
+        if (newQuantity > stock) {
+          return rejectWithValue("Vượt quá số lượng tồn kho");
+        }
+
         const updated = await axios.patch(`${API}/cart/${existing.id}`, {
-          quantity: existing.quantity + quantity,
+          quantity: newQuantity,
         });
+
         return updated.data;
       } else {
-        const updated = await axios.patch(`${API}/cart/${existing.id}`, {
-          quantity: existing.quantity + 1,
+        const created = await axios.post(`${API}/cart`, {
+          user_id,
+          product_id,
+          quantity,
         });
-        return updated.data;
+
+        return created.data;
       }
-      
-    } else {
-      const created = await axios.post(`${API}/cart`, {
-        user_id,
-        product_id,
-        quantity: quantity || 1,
-      });
-      return created.data;
+    } catch (error) {
+      return rejectWithValue("Có lỗi xảy ra khi thêm vào giỏ hàng");
     }
   }
 );

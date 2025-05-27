@@ -36,38 +36,38 @@ function WishList() {
         }
     };
 
-    const handleAddToCart = async (id: any) => {
+    const handleAddToCart = async (id: number) => {
         if (!user?.id) return;
         try {
-            await dispatch(addToCartServer({ user_id: user.id, product_id: id, quantity: quantity }));
-            setQuantity(1)
-            setShowModal({ state: false, product_id: 1 })
+            await dispatch(addToCartServer({ user_id: user.id, product_id: id, quantity }))
+                .unwrap(); 
+
+            setQuantity(1);
+            setShowModal({ state: false, product_id: 1 });
             toast.success(`${t("addCart")}`);
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
-            toast.error(`${t("errorOccurred")}`);
+            toast.error(err || t("errorOccurred")); 
         }
     };
-
-    useEffect(() => {
-        if (user?.id) dispatch(fetchWishlist(user.id));
-    }, [dispatch, user]);
 
     useEffect(() => {
         if (wishlist.length > 0) fetchProducts();
         else setProducts([]);
     }, [wishlist]);
 
-    const handleRemoveWishList = (id: number) => {
-        if (user?.id) {
-            dispatch(removeFromWishlist({ userId: user?.id, productId: id }));
-            toast.success(`${t('addWish')}`, {
-                icon: <i className="fa-solid fa-heart"></i>,
-                className: "text-[#F45D96]",
-                progressClassName: "bg-[#F45D96]",
+    const handleToggleWishlist = (id: number) => {
+        if (!user?.id) return;
+        if (wishlist.includes(id)) {
+            dispatch(removeFromWishlist({ userId: user.id, productId: id }));
+            toast.success(`${t('removeWish')}`, {
+                icon: <i className="fa-solid fa-heart-crack"></i>,
+                className: "text-[red]",
+                progressClassName: "bg-[red]",
             });
         }
     };
+
 
     return (
         <div className="mt-[100px]">
@@ -87,7 +87,7 @@ function WishList() {
                                 discount={product.discount}
                                 wishlist={true}
                                 id={product.id}
-                                removeWishlist={() => handleRemoveWishList(product.id)}
+                                removeWishlist={() => handleToggleWishlist(product.id)}
                                 open={() => setShowModal({ state: true, product_id: product.id })}
                             />
                         </div>

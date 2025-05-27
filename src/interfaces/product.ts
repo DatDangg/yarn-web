@@ -5,7 +5,7 @@ export interface ProductProps {
     price: number;
     discount: number;
     description: string,
-    quantity: number,
+    stock: number,
 }
 
 export interface ProductModalProps {

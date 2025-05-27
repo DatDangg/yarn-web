@@ -59,8 +59,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
                                 type="number"
                                 min={1}
                                 onChange={(e) => {
-                                    if (Number(e.target.value) >= 1 && Number(e.target.value) <=product.quantity)
-                                    setQuantity(Number(e.target.value))
+                                    if (Number(e.target.value) === 0 ) setQuantity(1)
+                                    else if (Number(e.target.value) > product.stock) setQuantity(product.stock)
+                                    else setQuantity(Number(e.target.value))
                                 }}
                             />
                             <button

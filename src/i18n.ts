@@ -56,6 +56,8 @@ i18n
                     addWish: "Add to wishlist",
                     removeWish: "Remove from wishlist",
                     detail: "Product Detail",
+                    productFind: "Finding product...?",
+                    errorOccurred: "Error",
                 },
             },
             vi: {
@@ -101,6 +103,8 @@ i18n
                     addWish: "Đã thích",
                     removeWish: "Đã bỏ thích",
                     detail: "Chi tiết sản phẩm",
+                    productFind: "Sản phẩm...?",
+                    errorOccurred: "Có lỗi",
                 },
             },
         },

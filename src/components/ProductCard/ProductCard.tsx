@@ -20,16 +20,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
     const dispatch = useAppDispatch();
     const { user } = useAuth()
     const { t } = useTranslation()
-    const API = process.env.REACT_APP_API_URL;
 
     const handleAddToCart = async () => {
         if (!user?.id) return;
         try {
-            await dispatch(addToCartServer({ user_id: user.id, product_id: id }));
+            await dispatch(addToCartServer({ user_id: user.id, product_id: id }))
+            .unwrap()
             toast.success(`${t("addCart")}`);
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
-            toast.error(`${t("errorOccurred")}`);
+            toast.error(err || t("errorOccurred")); 
         }
     };
 

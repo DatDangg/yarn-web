@@ -53,7 +53,7 @@ function Cart() {
             const product = products.find(p => p.id === item?.product_id)
             if (!item || !product) continue
 
-            const safeQty = Math.max(1, Math.min(qty, product.quantity))
+            const safeQty = Math.max(1, Math.min(qty, product.stock))
             if (safeQty !== item.quantity) {
                 dispatch(updateQuantity({ id: Number(item.id), quantity: safeQty }))
             }
@@ -138,7 +138,7 @@ function Cart() {
             key: 'quantity',
             render: (_, __, index) => {
                 const item = cartItems[index]
-                const productQuantity = products[index]?.quantity ?? 1
+                const productQuantity = products[index]?.stock ?? 1
                 const localValue = localQuantities[item.id!] ?? item.quantity
 
                 const handleQtyChange = (val: number) => {

@@ -9,14 +9,24 @@ module.exports = {
         'md-lg': '992px', 
       },
       keyframes: {
-        bounceY: {
-          '100%': { transform: 'translateY(8px)' , opacity: 0.8  } , 
-          '0%': { transform: 'translateY(-8px)' },
-          '100%': { transform: 'translateY(8px)'} , 
-        },
-      },
+  bounceY: {
+    '0%': {
+      transform: 'translateY(8px)',
+      opacity: 0.2,
+    },
+    '50%': {
+      transform: 'translateY(-8px)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'translateY(8px)',
+      opacity: 0.2,
+    },
+  },
+},
+
       animation: {
-        'bounce-y': 'bounceY 1s infinite ease-in-out',
+        'bounce-y': 'bounceY .7s infinite ease-in-out',
       },
     },
   },
