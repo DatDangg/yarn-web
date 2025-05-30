@@ -88,7 +88,7 @@ function Blog() {
                                 className="col-lg-4 my-[36px] flex-col items-center justify-center text-center"
                                 style={{ padding: "6px 26px" }}
                             >
-                                <BlogCard title={blog.title} category={blog.category} image={blog.image} />
+                                <BlogCard id={blog.id} title={blog.title} category={blog.category} image={blog.image} />
                             </div>
                             ))}
                             <div className="text-center flex justify-center mt-2">

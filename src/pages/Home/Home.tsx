@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { addToWishlist, removeFromWishlist } from "../../store/slice/wishlistSlice";
 import { useNavigate } from "react-router-dom";
-import { addToCartServer } from "../../store/slice/cartSlice";
 import ProductModal from "../../components/ui/ProductModal";
 import { ProductProps } from "../../interfaces/product";
 import { BlogProps } from "../../interfaces/blog";
@@ -190,7 +189,7 @@ function Home() {
                     <div className="row">
                         {blogs.map(blog => (
                             <div key={blog.id} className="col-lg-3 flex-col items-center justify-center mx-0">
-                                <BlogCard title={blog.title} category={blog.category} image={blog.image} />
+                                <BlogCard id={blog.id} title={blog.title} category={blog.category} image={blog.image} />
                             </div>
                         ))}
                     </div>

@@ -21,11 +21,12 @@ import Cart from './pages/Cart/Cart';
 import AppInitializer from './components/ui/AppInitializer';
 import WishList from './pages/WishList/WishList';
 import ProductList from './pages/ProductList/ProductList';
+import BlogDetail from './pages/Blog/BlogDetail';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>
         <BrowserRouter>
@@ -47,12 +48,13 @@ root.render(
               <Route path="/cart" element={<Cart />} />
               <Route path="/wishlist" element={<WishList />} />
               <Route path="/product" element={<ProductList />} />
+              <Route path="/blog/:name" element={<BlogDetail />} />
             </Route>
           </Routes>
         </BrowserRouter>
       </AuthProvider>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 reportWebVitals();

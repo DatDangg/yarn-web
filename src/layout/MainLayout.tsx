@@ -8,7 +8,7 @@ function MainLayout() {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > document.documentElement.scrollHeight / 2) {
+            if (window.scrollY > document.documentElement.scrollHeight / 3) {
                 setIsShow(true)
             } else {
                 setIsShow(false)

@@ -43,7 +43,7 @@ function Header() {
             <div className='container'>
                 <div className='row items-center py-1'>
                     <div className='col-lg-3'>
-                        <Link to='/'>
+                        <Link to='/' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                             <img src='/logo.png' className='max-w-[230px] cursor-pointer' style={{ height: isScrolled ? "64px" : "" }}></img>
                         </Link>
                     </div>
