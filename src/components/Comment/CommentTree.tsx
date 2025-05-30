@@ -37,7 +37,7 @@ export default function CommentTree({
       return 0;
     }
     return comment.replies.reduce((acc, curr) => {
-      return acc + 1 + countNestedReplies(curr); 
+      return acc + 1 + countNestedReplies(curr);
     }, 0);
   };
 
@@ -93,7 +93,10 @@ export default function CommentTree({
         ...prev,
         [comment.id]: "",
       }));
-
+      setReplyBoxHeights((prev) => ({
+        ...prev,
+        [comment.id]: 55,
+      }));
       reload();
     } catch (error) {
       console.error("Failed to post comment:", error);
@@ -182,8 +185,8 @@ export default function CommentTree({
                       <span
                         dangerouslySetInnerHTML={{
                           __html: `${comment.reply_to?.username
-                              ? `<b class='mr-1'>${comment.reply_to.username}</b>`
-                              : ""
+                            ? `<b class='mr-1'>${comment.reply_to.username}</b>`
+                            : ""
                             }${comment.content}`,
                         }}
                       />
@@ -296,9 +299,9 @@ export default function CommentTree({
                       style={{ height: replyBoxHeights[comment.id] || 55 }}
                     />
                     <i
-                      className={`fa-solid fa-paper-plane absolute right-[34px] bottom-[25px] ${newComments[comment.id]
-                          ? "cursor-pointer text-[var(--active-color)]"
-                          : "cursor-not-allowed text-[#bec3c9]"
+                      className={`fa-solid fa-paper-plane absolute right-[34px] bottom-[15px] ${newComments[comment.id]
+                        ? "cursor-pointer text-[var(--active-color)]"
+                        : "cursor-not-allowed text-[#bec3c9]"
                         }`}
                       onClick={() => handleComment(comment)}
                     ></i>
