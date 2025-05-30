@@ -26,7 +26,7 @@ import BlogDetail from './pages/Blog/BlogDetail';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>
         <BrowserRouter>
@@ -54,7 +54,7 @@ root.render(
         </BrowserRouter>
       </AuthProvider>
     </Provider>
-  // </React.StrictMode>
+  </React.StrictMode>
 );
 
 reportWebVitals();
