@@ -70,7 +70,7 @@ export const addToCartServer = createAsyncThunk<
       }
 
       if (existing) {
-        const newQuantity = existing.quantity + Number(quantity);
+        const newQuantity = Number(existing.quantity) + Number(quantity);
         if (newQuantity > stock) {
           return rejectWithValue(t("cartError2"));
         }

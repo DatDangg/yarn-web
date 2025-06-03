@@ -9,16 +9,17 @@ import buildCommentTree from "../../utils/buildCommentTree";
 
 import CommentTree from "../../components/Comment/CommentTree";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 
 function BlogDetail() {
   const location = useLocation();
   const blogId = location.state?.blogId || "";
   const API = process.env.REACT_APP_API_URL;
-const [singleReplyBox, setSingleReplyBox] = useState<number | null>(null);
-const [replyTo, setReplyTo] = useState<{ [key: number]: string }>({});
-const [level0ReplyBoxes, setLevel0ReplyBoxes] = useState<number[]>([]);
-
+  const [singleReplyBox, setSingleReplyBox] = useState<number | null>(null);
+  const [replyTo, setReplyTo] = useState<{ [key: number]: string }>({});
+  const [level0ReplyBoxes, setLevel0ReplyBoxes] = useState<number[]>([]);
+  const { t } = useTranslation()
 
   const [newComment, setNewComment] = useState('');
   const { user } = useAuth()
@@ -33,7 +34,7 @@ const [level0ReplyBoxes, setLevel0ReplyBoxes] = useState<number[]>([]);
         const enrichedComments = await Promise.all(
           comments.map(async (comment) => {
             try {
-              const userRes = await axios.get(`${API}/users/${comment.user_id}`);
+              const userRes = await axios.get(`${API}/userinfor/${comment.user_id}`);
               return {
                 ...comment,
                 userInfor: {
@@ -132,7 +133,7 @@ const [level0ReplyBoxes, setLevel0ReplyBoxes] = useState<number[]>([]);
           <div className="ml-2 w-full">
             <textarea
               value={newComment}
-              placeholder={`Write your comment`}
+              placeholder={t("comment")}
               onChange={(e) => {
                 setNewComment(e.target.value);
                 const target = e.target as HTMLTextAreaElement;
@@ -151,17 +152,17 @@ const [level0ReplyBoxes, setLevel0ReplyBoxes] = useState<number[]>([]);
             ></i>
           </div>
         </div>
-<CommentTree
-  comments={comments}
-  reload={fetchComment}
-  authorId={data?.author_id || 0}
-  singleReplyBox={singleReplyBox}
-  setSingleReplyBox={setSingleReplyBox}
-  replyTo={replyTo}
-  setReplyTo={setReplyTo}
-  level0ReplyBoxes={level0ReplyBoxes}
-  setLevel0ReplyBoxes={setLevel0ReplyBoxes}
-/>
+        <CommentTree
+          comments={comments}
+          reload={fetchComment}
+          authorId={data?.author_id || 0}
+          singleReplyBox={singleReplyBox}
+          setSingleReplyBox={setSingleReplyBox}
+          replyTo={replyTo}
+          setReplyTo={setReplyTo}
+          level0ReplyBoxes={level0ReplyBoxes}
+          setLevel0ReplyBoxes={setLevel0ReplyBoxes}
+        />
 
 
       </div>

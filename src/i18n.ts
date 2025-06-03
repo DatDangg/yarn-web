@@ -61,6 +61,10 @@ i18n
                     cartError1: "Invalid quantity",
                     cartError2: "Out of stock",
                     cartError3: "An error occurred while adding to the cart",
+                    author: "Author",
+                    reply: "Reply",
+                    comment: "Write your comment",
+                    replyTo: "Reply to"
                 },
             },
             vi: {
@@ -94,7 +98,7 @@ i18n
                     table5: "TỔNG GIÁ",
                     table6: "XÓA",
                     discount: "Mã giảm giá",
-                    discountDesc: "Điền mã giảm giá nếu bạn có",
+                    discountDesc: "Điền mã giảm giá nếu bạn có!",
                     discountPlaceholder: "Nhập mã giảm giá ở đây",
                     payment: "Chi tiết thanh toán",
                     payment1: "Tổng tiền hàng",
@@ -111,6 +115,10 @@ i18n
                     cartError1: "Số lượng không hợp lệ",
                     cartError2: "Vượt quá số lượng tồn kho",
                     cartError3: "Có lỗi xảy ra khi thêm vào giỏ hàng",
+                    author: "Tác giả",
+                    reply: "Trả lời",
+                    comment: "Viết bình luận của bạn",
+                    replyTo: "Trả lời"
                 },
             },
         },

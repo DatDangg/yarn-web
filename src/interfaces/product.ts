@@ -6,6 +6,7 @@ export interface ProductProps {
     discount: number;
     description: string,
     stock: number,
+    quantity?:number
 }
 
 export interface ProductModalProps {

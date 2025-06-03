@@ -5,6 +5,7 @@ import styles from './ProductCard.module.css'
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { ProductCardProps } from '../../interfaces/product';
+import formatPrice from '../../utils/formatPrice';
 
 const ProductCard: React.FC<ProductCardProps> = ({
     img,
@@ -33,7 +34,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 quantity,
                 t
             })).unwrap();
-
             toast.success(`${t("addCart")}`);
 
             if (setQuantity) setQuantity('1');
@@ -51,7 +51,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <div className={styles.productItem__name}>
                 <a href="#">{name}</a>
             </div>
-            <div className={styles.productItem__price}>{price.toLocaleString()}đ</div>
+            <div className={styles.productItem__price}>{formatPrice(price)}</div>
             <div onClick={handleAddToCart} className={styles.productItem__addCart}>
                 Add to Cart
             </div>

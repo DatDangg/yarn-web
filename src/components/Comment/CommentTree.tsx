@@ -4,6 +4,7 @@ import { CommentItem } from "../../interfaces/blog";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
 import formatDateTime from "../../utils/formatDateTime";
+import { useTranslation } from "react-i18next";
 
 export default function CommentTree({
   comments,
@@ -57,6 +58,7 @@ export default function CommentTree({
   const blogId = location.state?.blogId || "";
   const { user } = useAuth();
   const API = process.env.REACT_APP_API_URL;
+  const { t } = useTranslation()
 
   const toggleReplies = (commentId: number) => {
     setExpandedComments((prev) => ({
@@ -177,7 +179,7 @@ export default function CommentTree({
                       {comment.user_id === authorId && (
                         <div className="text-[12px] text-[var(--text-color)] leading-[12px] flex items-center">
                           <i className="fa-solid fa-pen-fancy mr-[4px]"></i>
-                          Author
+                          {t("author")}
                         </div>
                       )}
                     </div>
@@ -229,7 +231,7 @@ export default function CommentTree({
                         }
                       }}
                     >
-                      Trả lời
+                      {t("reply")}
                     </span>
                   </div>
                 </div>
@@ -278,7 +280,7 @@ export default function CommentTree({
                     <textarea
                       ref={replyInputRef}
                       value={newComments[comment.id] || ""}
-                      placeholder={`Reply to ${replyTo[comment.id] || ""}`}
+                      placeholder={`${t("replyTo")} ${replyTo[comment.id] || ""}`}
                       onChange={(e) => {
                         const { value } = e.target;
                         setNewComments((prev) => ({

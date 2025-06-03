@@ -4,29 +4,133 @@
       "id": 1,
       "username": "dat",
       "password": "123",
-      "avatar": "https://i.pinimg.com/736x/c3/4f/05/c34f05de66c5c294d5fa10ea23b7a429.jpg",
       "token": "mock_token"
     },
     {
       "id": 2,
       "username": "lay",
       "password": "123",
-      "avatar": "https://i.pinimg.com/736x/f4/81/15/f48115a03aa492c7719cabfa1eb9822c.jpg",
       "token": "mock_token1"
     },
     {
       "id": 3,
       "username": "alpenliebe",
       "password": "123",
-      "avatar": "https://i.pinimg.com/736x/49/11/6c/49116cca04a362f808baa8b14f2baa54.jpg",
       "token": "mock_token1"
     },
     {
       "id": 4,
       "username": "meomeo",
       "password": "123",
-      "avatar": "https://i.pinimg.com/736x/4d/0c/c3/4d0cc349c56c8cd7d198a5c66d42a885.jpg",
       "token": "mock_token1"
+    }
+  ],
+  "userinfor": [
+    {
+      "id": 1,
+      "username": "dat",
+      "fullname": "Dang Tien Dat",
+      "avatar": "https://i.pinimg.com/736x/c3/4f/05/c34f05de66c5c294d5fa10ea23b7a429.jpg",
+      "phonenumber": "0123456789",
+      "address": "Duyen Ha, Ha Noi",
+      "shipping_infor": [
+        {
+          "id": 1,
+          "address": "Duyen Ha, Ha Noi",
+          "phonenumber": "0123456789",
+          "state": "",
+          "receiver": "meomeo123r"
+        },
+        {
+          "id": 2,
+          "address": "Y Yen, Nam Dinh",
+          "phonenumber": "0123456789",
+          "receiver": "huhuh",
+          "state": ""
+        },
+        {
+          "id": 5,
+          "address": "hasdfjksadlkfasl;dfds",
+          "phonenumber": "0123456789",
+          "receiver": "huhuh",
+          "state": "default"
+        },
+        {
+          "id": 9,
+          "address": "meoeemmeomeomeomeoe",
+          "phonenumber": "0123456789",
+          "receiver": "huhuh"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "username": "lay",
+      "fullname": "Dang Tien lay",
+      "avatar": "https://i.pinimg.com/736x/f4/81/15/f48115a03aa492c7719cabfa1eb9822c.jpg",
+      "phonenumber": "0123456789",
+      "address": "Duyen Ha, Ha Noi",
+      "shipping_infor": [
+        {
+          "id": 1,
+          "address": "Duyen Ha, Ha Noi",
+          "phonenumber": "0123456789",
+          "state": "default",
+          "receiver": "hehe"
+        },
+        {
+          "id": 2,
+          "address": "Y Yen, Nam Dinh",
+          "phonenumber": "0123456789",
+          "receiver": "huhuh"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "username": "alpenliebe",
+      "fullname": "Dang Tien alpenliebe",
+      "avatar": "https://i.pinimg.com/736x/49/11/6c/49116cca04a362f808baa8b14f2baa54.jpg",
+      "phonenumber": "0123456789",
+      "address": "Duyen Ha, Ha Noi",
+      "shipping_infor": [
+        {
+          "id": 1,
+          "address": "Duyen Ha, Ha Noi",
+          "phonenumber": "0123456789",
+          "state": "default",
+          "receiver": "hehe"
+        },
+        {
+          "id": 2,
+          "address": "Y Yen, Nam Dinh",
+          "phonenumber": "0123456789",
+          "receiver": "huhuh"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "username": "meomeo",
+      "fullname": "Dang Tien meomeo",
+      "avatar": "https://i.pinimg.com/736x/4d/0c/c3/4d0cc349c56c8cd7d198a5c66d42a885.jpg",
+      "phonenumber": "0123456789",
+      "address": "Duyen Ha, Ha Noi",
+      "shipping_infor": [
+        {
+          "id": 1,
+          "address": "Duyen Ha, Ha Noi",
+          "phonenumber": "0123456789",
+          "state": "default",
+          "receiver": "hehe"
+        },
+        {
+          "id": 2,
+          "address": "Y Yen, Nam Dinh",
+          "phonenumber": "0123456789",
+          "receiver": "huhuh"
+        }
+      ]
     }
   ],
   "product": [
@@ -281,20 +385,55 @@
       "user_id": 1,
       "product_id": 3,
       "id": 1
+    },
+    {
+      "user_id": 2,
+      "product_id": 1,
+      "id": 2
     }
   ],
   "cart": [
     {
       "user_id": 1,
       "product_id": 7,
-      "quantity": 2,
+      "quantity": 6,
       "id": 1
     },
     {
       "user_id": 1,
       "product_id": 5,
-      "quantity": "1",
+      "quantity": 2,
       "id": 2
+    },
+    {
+      "user_id": 2,
+      "product_id": 2,
+      "quantity": 2,
+      "id": 4
+    },
+    {
+      "user_id": 2,
+      "product_id": 3,
+      "quantity": 3,
+      "id": 5
+    },
+    {
+      "user_id": 2,
+      "product_id": 4,
+      "quantity": 1,
+      "id": 6
+    },
+    {
+      "user_id": 2,
+      "product_id": 1,
+      "quantity": 5,
+      "id": 7
+    },
+    {
+      "user_id": 1,
+      "product_id": 1,
+      "quantity": "1",
+      "id": 8
     }
   ],
   "coupon": [
@@ -792,5 +931,6 @@
       "content": "asdfsafd<br/>asd<br/>f<br/>sdf<br/>sad<br/>f<br/>asdf<br/>asd<br/>fs<br/>daf<br/>asdf",
       "id": 43
     }
-  ]
+  ],
+  "order": []
 }

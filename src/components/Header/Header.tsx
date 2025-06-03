@@ -3,10 +3,12 @@ import { Link, NavLink, useNavigate } from 'react-router'
 import { useAuth } from '../../contexts/AuthContext'
 import { useAppSelector } from '../../hooks/useStore'
 import { useEffect, useState } from 'react'
+import { UserOutlined } from '@ant-design/icons'
+import { Avatar } from 'antd'
 
 function Header() {
     const { i18n } = useTranslation()
-    const { logout, isAuthenticated } = useAuth()
+    const { logout, isAuthenticated, user } = useAuth()
     const navigate = useNavigate()
     const [isScrolled, setIsScrolled] = useState(false)
 
@@ -88,8 +90,12 @@ function Header() {
                             <li className="px-[12px] py-[12px] font-[600] text-[24px]">
                                 {isAuthenticated
                                     ?
-                                    <div className='relative group'>
-                                        <i className="fa-regular fa-user cursor-pointer"></i>
+                                    <div className='relative group w-[35px]'>
+                                        {user?.avatar ?
+                                            <img src={user.avatar} className='block w-[35px] h-[35px] rounded-[50%]' />
+                                            :
+                                            <Avatar size={34} icon={<UserOutlined />} />
+                                        }
                                         <div className="absolute after:block after:content-[''] after:bg-transparent after:w-[40px] after:h-[5px] bottom-[-1px] right-0"></div>
                                         <ul className='absolute right-0 text-[16px] hidden group-hover:block pl-0 z-[10] w-[180px] bg-white font-[family-name:(var(--font-Gentium)] rounded-[5px] shadow-[0_3px_8px_rgba(0,0,0,0.25)]'>
                                             <li>
@@ -113,16 +119,16 @@ function Header() {
                                     : <button onClick={() => navigate("/login")} className='uppercase font-[family-name:var(--font-Gentium)] text-[18px] text-[var(--primary1-color)] font-[700] border-2 border-[var(--border-color)] px-[14px] py-[3px] hover:bg-[var(--active-color)] hover:border-[var(--active-color)] hover:text-[#fff] rounded-[4px]'>Login</button>
                                 }
                             </li>
-                            <li className="relative px-[12px] py-[12px] font-[600] text-[24px]">
-                                <Link to='/cart'>
+                            <Link to='/cart'>
+                                <li className="relative px-[12px] py-[12px] font-[600] text-[24px]">
                                     <i className="fa-solid fa-cart-shopping text-black" />
-                                </Link>
-                                {totalQuantity > 0 &&
-                                    <div className="absolute flex justify-center border-[1.5px] border-[#fff] items-center top-[5px] right-[1px] bg-[var(--primary2-color)] w-[22px] h-[22px] rounded-[50%]">
-                                        <div className='text-[#fff] text-[12px] leading-[12px]'>{totalQuantity}</div>
-                                    </div>
-                                }
-                            </li>
+                                    {totalQuantity > 0 &&
+                                        <div className="absolute flex justify-center border-[1.5px] border-[#fff] items-center top-[5px] right-[1px] bg-[var(--primary2-color)] w-[22px] h-[22px] rounded-[50%]">
+                                            <div className='text-[#fff] text-[12px] leading-[12px]'>{totalQuantity}</div>
+                                        </div>
+                                    }
+                                </li>
+                            </Link>
                             <li className="px-[12px] py-[12px] font-[600]">
                                 <div className="relative w-[88px] h-[38px]">
                                     <input
@@ -158,7 +164,7 @@ function Header() {
                     </div>
                 </div>
             </div>
-            
+
         </div>
     )
 }

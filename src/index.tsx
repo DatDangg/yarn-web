@@ -22,7 +22,7 @@ import AppInitializer from './components/ui/AppInitializer';
 import WishList from './pages/WishList/WishList';
 import ProductList from './pages/ProductList/ProductList';
 import BlogDetail from './pages/Blog/BlogDetail';
-
+import CheckOut from './pages/Cart/CheckOut';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -46,6 +46,7 @@ root.render(
               <Route path="/about" element={<About />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<CheckOut />} />
               <Route path="/wishlist" element={<WishList />} />
               <Route path="/product" element={<ProductList />} />
               <Route path="/blog/:name" element={<BlogDetail />} />

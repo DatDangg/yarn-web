@@ -7,6 +7,7 @@ import { addToCartServer } from "../../store/slice/cartSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { toast } from "react-toastify";
+import formatPrice from "../../utils/formatPrice";
 
 const ProductModal: React.FC<ProductModalProps> = ({
     show,
@@ -64,13 +65,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
                         <div className="flex items-center font-[family-name:var(--font-Gentium)]">
                             {product.discount ? (
                                 <>
-                                    <div className="text-[24px]">{discountedPrice.toLocaleString()}đ</div>
+                                    <div className="text-[24px]">{formatPrice(discountedPrice)}</div>
                                     <div className="text-[20px] line-through ml-[20px] text-[var(--text-color)]">
-                                        {product.price.toLocaleString()}đ
+                                        {formatPrice(product.price)}
                                     </div>
                                 </>
                             ) : (
-                                <div className="text-[24px]">{product.price.toLocaleString()}đ</div>
+                                <div className="text-[24px]">{formatPrice(product.price)}</div>
                             )}
                         </div>
                         <div className="w-full h-[1px] border border-[--border-color] my-[15px]"></div>
