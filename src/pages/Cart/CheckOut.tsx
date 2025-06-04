@@ -9,8 +9,9 @@ import { useDistanceCalculator } from "../../components/useDistanceCalculator"
 import { Shipping } from "../../interfaces/user"
 import { formatDate_ } from "../../utils/formatDate"
 import { v4 as uuidv4 } from 'uuid';
-import { useAppSelector } from "../../hooks/useStore"
+import { useAppDispatch, useAppSelector } from "../../hooks/useStore"
 import formatPrice from "../../utils/formatPrice"
+import { removeFromCart } from "../../store/slice/cartSlice"
 
 
 interface SelectedProduct {
@@ -20,20 +21,26 @@ interface SelectedProduct {
     discount?: number
 }
 
-interface Order {
-    id?: number,
-    products: SelectedProduct[],
-    user_id: number,
-    status: string,
-    created_at: string,
+interface Payment {
     totalPrice: number,
     shippingFee: number,
     couponDiscount: number
+    status: string,
+}
+
+export interface Order {
+    id?: number,
+    products: SelectedProduct[],
+    user_id: number,
+    order_status: 'Pending' | 'Shipping' | 'Delivered' | 'Canceled',
+    created_at: string,
+    payment: Payment,
     address: Shipping
 }
 
 function CheckOut() {
     const { t } = useTranslation()
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const API = process.env.REACT_APP_API_URL
     const { user, update } = useAuth()
@@ -284,13 +291,13 @@ function CheckOut() {
     const paymentCheck = async () => {
         try {
             const date = formatDate_(new Date())
-            const a = await axios.get(`https://my.sepay.vn/userapi/transactions/list?transaction_date_min=${date}&amount_in=${transactionRef}`, {
+            const data = await axios.get(`https://my.sepay.vn/userapi/transactions/list?transaction_date_min=${date}&amount_in=${transactionRef}`, {
                 headers: {
                     'Authorization': 'Bearer BQTYVJWFCX0BKXAWHDJHRWPUSIH72T2P6VB9EDSZG8UOTROV8XGIKILTIXUUSEWC',
                     'Content-Type': 'application/json'
                 }
             });
-            const transaction = a.data.transactions
+            const transaction = data.data.transactions
             if (transaction.length > 0) {
                 transaction.map((data: any) => {
                     if (data.transaction_content.includes(transactionRef.split('-').join(''))) {
@@ -306,11 +313,10 @@ function CheckOut() {
 
     const handlePayment = async () => {
         try {
-            let a = []
-            a.push(...selectedProducts.map(data =>
+            let order = []
+            order.push(...selectedProducts.map(data =>
                 cartItems.filter(value => value.product_id === data.product_id)
             ))
-
 
             const orderProducts: SelectedProduct[] = products.map(item => ({
                 product_id: item.id,
@@ -318,25 +324,32 @@ function CheckOut() {
                 price: item.price,
                 discount: item.discount ?? 0
             }));
-            const newOrder: Order = {
-                products: orderProducts,
-                user_id: user?.id!,
-                status: "Pending",
-                created_at: new Date().toISOString(),
+
+            const payment: Payment = {
                 totalPrice: totalPayment,
                 shippingFee: shippingCharge,
                 couponDiscount: couponDiscount,
+                status: activeMethod === 'cod' ? "Unpaid" : "Paid"
+            }
+
+            console.log(activeMethod)
+
+            const newOrder: Order = {
+                products: orderProducts,
+                user_id: user?.id!,
+                order_status: "Pending",
+                created_at: new Date().toISOString(),
+                payment,
                 address: defaultAddress!
             }
             console.log(newOrder)
 
-            // await axios.post(`${API}/order`, { ...newOrder })
+            await axios.post(`${API}/order`, { ...newOrder })
 
-            // const heck = await Promise.all(
-            //     a.map(item => axios.delete(`${API}/cart/${item[0].id}`))
-            // )
-            // console.log(heck)
-            // navigate("/cart")
+            await Promise.all(
+                order.map(item => dispatch(removeFromCart(item[0].id!)))
+            )
+            navigate("/cart")
         } catch (err) {
             console.log(err)
         }

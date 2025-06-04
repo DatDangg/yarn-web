@@ -97,9 +97,9 @@ function Header() {
                                             <Avatar size={34} icon={<UserOutlined />} />
                                         }
                                         <div className="absolute after:block after:content-[''] after:bg-transparent after:w-[40px] after:h-[5px] bottom-[-1px] right-0"></div>
-                                        <ul className='absolute right-0 text-[16px] hidden group-hover:block pl-0 z-[10] w-[180px] bg-white font-[family-name:(var(--font-Gentium)] rounded-[5px] shadow-[0_3px_8px_rgba(0,0,0,0.25)]'>
+                                        <ul className='absolute right-0 text-[16px] hidden group-hover:block pl-0 z-[10] w-[180px] bg-white font-[family-name:var(--font-Gentium)] rounded-[5px] shadow-[0_3px_8px_rgba(0,0,0,0.25)]'>
                                             <li>
-                                                <Link to="/" className='no-underline  text-black hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'>
+                                                <Link to="/user/profile" className='no-underline  text-black hover:font-[700] px-[14px] py-[12px] w-full block capitalize hover:bg-[var(--border-color)] hover:!text-[var(--active-color)]'>
                                                     My Account
                                                 </Link>
                                             </li>

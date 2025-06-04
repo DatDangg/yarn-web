@@ -23,6 +23,9 @@ import WishList from './pages/WishList/WishList';
 import ProductList from './pages/ProductList/ProductList';
 import BlogDetail from './pages/Blog/BlogDetail';
 import CheckOut from './pages/Cart/CheckOut';
+import AccountLayout from './layout/AccountLayout';
+import Profile from './pages/Account/Profile';
+import Orders from './pages/Order/Order';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -50,6 +53,10 @@ root.render(
               <Route path="/wishlist" element={<WishList />} />
               <Route path="/product" element={<ProductList />} />
               <Route path="/blog/:name" element={<BlogDetail />} />
+            </Route>
+            <Route path='/user' element={<AccountLayout />}>
+              <Route path="profile" element={<Profile />} />
+              <Route path="order" element={<Orders />} />
             </Route>
           </Routes>
         </BrowserRouter>
