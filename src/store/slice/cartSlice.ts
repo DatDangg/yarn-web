@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useTranslation } from "react-i18next";
 
 const API = process.env.REACT_APP_API_URL;
 

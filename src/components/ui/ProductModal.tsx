@@ -5,9 +5,10 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
 import { addToCartServer } from "../../store/slice/cartSlice";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
 import { toast } from "react-toastify";
 import formatPrice from "../../utils/formatPrice";
+import { useSelector } from "react-redux";
 
 const ProductModal: React.FC<ProductModalProps> = ({
     show,
@@ -20,7 +21,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
     const { user } = useAuth();
     const { t } = useTranslation()
     const dispatch = useDispatch<AppDispatch>();
+
+    const cartItems = useSelector((state: RootState) => state.cart.items);
     if (!show || !product) return null;
+    const existingItem = cartItems.find(
+        (item) => item.product_id === product.id && item.user_id === user?.id
+    );
+    const alreadyInCart = existingItem?.quantity || 0;
+    const maxQuantity = product.stock - alreadyInCart;
+
 
     const discountedPrice = product.discount
         ? Number((product.price * (1 - product.discount / 100)).toFixed(0))
@@ -82,11 +91,23 @@ const ProductModal: React.FC<ProductModalProps> = ({
                                 type="number"
                                 // min={1}
                                 onChange={(e) => {
-                                    if (e.target.value === '0' ) setQuantity('1')
-                                    else if (Number(e.target.value) > product.stock) setQuantity(String(product.stock))
-                                    else setQuantity(e.target.value)
+                                    const val = Number(e.target.value);
+                                    if (val <= 0 || isNaN(val)) {
+                                        setQuantity("1");
+                                    } else if (val > maxQuantity) {
+                                        if (maxQuantity > 0) {
+                                            setQuantity(String(maxQuantity));
+                                        } else {
+
+                                            setQuantity("1"); 
+                                        }
+                                    } else {
+                                        setQuantity(String(val));
+                                    }
                                 }}
-                                onBlur={(e) => {if (e.target.value === '' ) setQuantity('1')}}
+
+
+                                onBlur={(e) => { if (e.target.value === '') setQuantity('1') }}
                             />
                             <button
                                 className=" rounded-[5px] border bg-[var(--border-color)] hover:border-[var(--primary2-color)] hover:bg-[var(--primary2-color)] uppercase px-[24px] ml-[12px] hover:text-white font-[600]"

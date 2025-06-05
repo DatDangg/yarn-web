@@ -17,7 +17,6 @@ export interface UserInforProps {
   username: string,
   avatar: string,
   fullname: string,
-  address: string
   phonenumber: string,
   shippingInfor: Shipping[],
   birthday?: string,

@@ -19,7 +19,7 @@ function About() {
                 <div className="row">
                     <div className="flex gap-5 relative justify-center">
                         <CustomSVG className="w-[120px] h-auto absolute top-[-115px] left-[80px]" fillColor="var(--active-color)" />
-                        <div className="text-center text-[32px] px-[120px] py-[40px]ccc">
+                        <div className="text-center text-[32px] px-[120px] py-[40px]">
                             <Trans
                                 i18nKey="about"
                                 components={{

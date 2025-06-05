@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { CommentItem } from "../../interfaces/blog";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
-import formatDateTime from "../../utils/formatDateTime";
+import { formatDateTime } from "../../utils/formatDateTime";
 import { useTranslation } from "react-i18next";
 
 export default function CommentTree({

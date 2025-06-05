@@ -24,13 +24,9 @@ interface SelectedProduct {
 interface Payment {
     totalPrice: number,
     shippingFee: number,
-    payment_method: string,
-    couponDiscount: number,
-    totalProduct: number,
+    couponDiscount: number
     status: string,
-    cf_payment_at?: string
 }
-
 
 export interface Order {
     id?: number,
@@ -38,13 +34,11 @@ export interface Order {
     user_id: number,
     order_status: 'Pending' | 'Shipping' | 'Delivered' | 'Canceled',
     created_at: string,
-    shipping_at: string,
-    finished_at: string,
     payment: Payment,
     address: Shipping
 }
 
-function CheckOut() {
+function Draft() {
     const { t } = useTranslation()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -71,6 +65,12 @@ function CheckOut() {
     }
     const cartItems = useAppSelector(state => state.cart.items)
     const [activeMethod, setActiveMethod] = useState<string | null>(null);
+    const [cardInfo, setCardInfo] = useState({
+        cardNumber: "",
+        cardHolder: "",
+        expiry: "",
+        cvv: "",
+    });
     const transactionRef = `CR${uuidv4()}`;
 
     const fetchData = async () => {
@@ -168,7 +168,7 @@ function CheckOut() {
         }
     };
 
-    const handleDefaultAddress = async () => {
+    const handleDefaultAddress = async (value: number) => {
         const newInfor = user?.shippingInfor.map(value => {
             if (value.state === "default") return { ...value, state: "" };
             else if (value.id === data.id) return { ...value, state: "default" };
@@ -182,6 +182,11 @@ function CheckOut() {
             })
             .catch(err => console.log(err))
     }
+
+    const handleCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setCardInfo(prev => ({ ...prev, [name]: value }));
+    };
 
     const paymentMethods = [
         {
@@ -219,6 +224,65 @@ function CheckOut() {
                         Xác nhận thanh toán
                     </button>
                 </div>
+
+            )
+        },
+        {
+            id: "card",
+            label: "Thẻ tín dụng/Ghi nợ",
+            content: (
+                <form className="flex flex-col gap-[12px]" onSubmit={(e) => { e.preventDefault(); handlePayment(); }}>
+                    <div>
+                        <label className="block text-sm font-medium mb-[4px]">Số thẻ</label>
+                        <input
+                            type="text"
+                            name="cardNumber"
+                            value={cardInfo.cardNumber}
+                            onChange={handleCardChange}
+                            className="border p-[8px] w-full rounded"
+                            placeholder="•••• •••• •••• ••••"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-[4px]">Tên chủ thẻ</label>
+                        <input
+                            type="text"
+                            name="cardHolder"
+                            value={cardInfo.cardHolder}
+                            onChange={handleCardChange}
+                            className="border p-[8px] w-full rounded"
+                            placeholder="Nguyễn Văn A"
+                        />
+                    </div>
+                    <div className="flex gap-[12px]">
+                        <div className="flex-1">
+                            <label className="block text-sm font-medium mb-[4px]">Ngày hết hạn</label>
+                            <input
+                                type="text"
+                                name="expiry"
+                                value={cardInfo.expiry}
+                                onChange={handleCardChange}
+                                className="border p-[8px] w-full rounded"
+                                placeholder="MM/YY"
+                            />
+                        </div>
+                        <div className="flex-1">
+                            <label className="block text-sm font-medium mb-[4px]">CVV</label>
+                            <input
+                                type="password"
+                                name="cvv"
+                                value={cardInfo.cvv}
+                                onChange={handleCardChange}
+                                className="border p-[8px] w-full rounded"
+                                placeholder="•••"
+                            />
+                        </div>
+                    </div>
+
+                    <button type="submit" className="font-[600] mt-[10px] bg-[var(--primary2-color)] text-white py-[10px] rounded">
+                        Thanh toán
+                    </button>
+                </form>
 
             )
         },
@@ -265,10 +329,7 @@ function CheckOut() {
                 totalPrice: totalPayment,
                 shippingFee: shippingCharge,
                 couponDiscount: couponDiscount,
-                payment_method: activeMethod!,
-                totalProduct: grandTotal,
-                status: activeMethod === 'cod' ? "Unpaid" : "Paid",
-                cf_payment_at: activeMethod === 'qr' ? new Date().toISOString() : '',
+                status: activeMethod === 'cod' ? "Unpaid" : "Paid"
             }
 
             const newOrder: Order = {
@@ -276,8 +337,6 @@ function CheckOut() {
                 user_id: user?.id!,
                 order_status: "Pending",
                 created_at: new Date().toISOString(),
-                shipping_at: "",
-                finished_at: "",
                 payment,
                 address: defaultAddress!
             }
@@ -287,9 +346,7 @@ function CheckOut() {
             await Promise.all(
                 order.map(item => dispatch(removeFromCart(item[0].id!)))
             )
-
-            localStorage.removeItem('selectedProducts')
-            navigate("/user/order")
+            navigate("/cart")
         } catch (err) {
             console.log(err)
         }
@@ -408,7 +465,7 @@ function CheckOut() {
                                     <div className="w-full h-[1px] border-1 border-[--border-color] my-[5px]"></div>
                                     <div className="flex justify-between py-[6px] px-[20px]">
                                         <div>{t("payment3")}</div>
-                                        <div className=" text-red-500 flex"> <span className="mr-[4px]">-</span>{formatPrice(couponDiscount)}</div>
+                                        <div className=" text-red-500"> -{' '}{formatPrice(couponDiscount)}</div>
                                     </div>
                                     <div className="w-full h-[1px] border-1 border-[--border-color] my-[5px]"></div>
                                     <div className="flex justify-between py-[6px] px-[20px] flex items-center">
@@ -566,7 +623,7 @@ function CheckOut() {
                                                         address: '',
                                                         phonenumber: ''
                                                     })
-                                                    handleDefaultAddress()
+                                                    handleDefaultAddress(data.id)
                                                 }}
                                             >
                                                 Đặt làm mặc định
@@ -600,4 +657,4 @@ function CheckOut() {
     )
 }
 
-export default CheckOut
+export default Draft

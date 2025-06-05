@@ -12,7 +12,6 @@ function Profile() {
 
     const initialValues = {
         fullname: user?.fullname || "",
-        address: user?.address || "",
         phonenumber: user?.phonenumber || "",
         email: user?.email || "",
         username: user?.username || "",
@@ -68,14 +67,12 @@ function Profile() {
                 birthday,
             };
 
-
             await axios.patch(`${API}/userinfor/${user?.id}`, {
                 ...payload
             })
 
             update()
 
-            console.log("Form submitted with:", payload);
         } catch (err) {
             console.log(err)
         }
@@ -121,13 +118,10 @@ function Profile() {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
                                     <FloatingInputField value="username" disabled label="Username" />
                                     <FloatingInputField value="fullname" label="Full Name" />
-                                    <FloatingInputField value="address" label="Address" />
                                     <FloatingInputField value="phonenumber" label="Phone Number" />
+                                    <FloatingInputField value="email" label="Email" />
 
                                     {/* New Birthday Fields */}
-                                </div>
-                                <div className="mt-10">
-                                    <FloatingInputField value="email" label="Email" />
                                 </div>
                                 <div className="mt-8 text-[18px] font-[family-name:var(--font-Gentium)]">Date of Birth</div>
                                 <div className="flex mt-2 gap-x-8">
