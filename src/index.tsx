@@ -26,6 +26,7 @@ import CheckOut from './pages/Cart/CheckOut';
 import AccountLayout from './layout/AccountLayout';
 import Profile from './pages/Account/Profile';
 import Orders from './pages/Order/Order';
+import Register from './pages/Login/Register';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -44,6 +45,7 @@ root.render(
           <AppInitializer />
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />

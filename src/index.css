@@ -97,3 +97,22 @@ input[type=number]::-webkit-outer-spin-button {
 .ant-modal-body::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
+
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* bạn có thể dùng var(--border-color) nếu dùng biến màu */
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.4);
+}

@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
-async function getCoordinates(address: string | number | boolean) {
+export async function getCoordinates(address: string | number | boolean) {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
     const res = await fetch(url);
     const data = await res.json();
-    if (data.length === 0) throw new Error(`Address not found: ${address}`);
-    return {
+    if (data.length === 0) return {
+        lat: 0,
+        lon: 0,
+    };
+    else return {
         lat: parseFloat(data[0].lat),
         lon: parseFloat(data[0].lon),
     };
+    
 }
 
 export function useDistanceCalculator(from: string, to: string) {
+    const { t } = useTranslation()
     const [distance, setDistance] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -20,6 +27,7 @@ export function useDistanceCalculator(from: string, to: string) {
             try {
                 const coordFrom = await getCoordinates(from);
                 const coordTo = await getCoordinates(to);
+                console.log(coordTo)
 
                 const response = await fetch("https://api.openrouteservice.org/v2/directions/driving-car", {
                     method: "POST",
@@ -39,6 +47,7 @@ export function useDistanceCalculator(from: string, to: string) {
                 const summary = data.routes[0].summary;
                 setDistance((summary.distance / 1000).toFixed(2));
             } catch (err: any) {
+                toast.error(`${t('checkout2')}`)
                 setError(err.message || "Unknown error occurred");
                 setDistance(null);
             }

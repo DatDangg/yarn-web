@@ -103,7 +103,7 @@ function Cart() {
         {
             title: "",
             key: "selection",
-            render: (data, __, index,) => {
+            render: (_, __, index,) => {
                 const item = cartItems[index]
                 const handleChange = () => {
                     setSelectedProducts(prev => {
@@ -245,10 +245,10 @@ function Cart() {
                     </div>
                     <div className="flex flex-col items-end pt-[24px] gap-2">
                         <div className="text-[18px] font-[600]">
-                            Số lượng sản phẩm: {summary.quantity}
+                            {t('cart1')}: {summary.quantity}
                         </div>
                         <div className="text-[18px] font-[600] flex">
-                            <span className="mr-[5px]">Tổng cộng:</span> {formatPrice(summary.total)}
+                            <span className="mr-[5px]">{t('cart2')}:</span> {formatPrice(summary.total)}
                         </div>
                         <button
                             className="text-[18px] font-[600] rounded-[5px] border-1 border-[var(--border-color)] w-fit px-[18px] py-[6px] float-right hover:border-[var(--primary2-color)] hover:text-[white] hover:bg-[var(--primary2-color)]"

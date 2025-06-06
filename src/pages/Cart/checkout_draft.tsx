@@ -135,7 +135,7 @@ function Draft() {
             if (value.id === data.id) return { ...value, address: data.address, receiver: data.receiver, phonenumber: data.phonenumber };
             else return value
         })
-        axios.patch(`${API}/userinfor/${user?.id}`, {
+        axios.patch(`${API}/users/${user?.id}`, {
             shipping_infor: newInfor
         })
             .then(() => {
@@ -158,7 +158,7 @@ function Draft() {
         ];
 
         try {
-            await axios.patch(`${API}/userinfor/${user.id}`, {
+            await axios.patch(`${API}/users/${user.id}`, {
                 shipping_infor: newShippingInfor
             });
 
@@ -174,7 +174,7 @@ function Draft() {
             else if (value.id === data.id) return { ...value, state: "default" };
             else return value
         })
-        axios.patch(`${API}/userinfor/${user?.id}`, {
+        axios.patch(`${API}/users/${user?.id}`, {
             shipping_infor: newInfor
         })
             .then(() => {

@@ -8,8 +8,9 @@ interface AuthContextType {
   login: (username: string, password: string) => void;
   logout: () => void;
   update: () => void;
+  register: (username: string, password: string) => void;
   isAuthenticated: boolean;
-  user: UserInforProps | null
+  user: UserInforProps | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const update = async () => {
     try {
-      const res = await fetch(`${API}/userinfor/${user?.id}`)
+      const res = await fetch(`${API}/users/${user?.id}`)
       const data = await res.json();
       const { shipping_infor, ...rest } = data;
       const loggedInUser: UserInforProps = {
@@ -45,11 +46,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (username: string, password: string) => {
     try {
-      const res = await fetch(`${API}/users?username=${username}&password=${password}`);
+      const res = await fetch(`${API}/login?username=${username}&password=${password}`);
       const id = await res.json();
 
       if (res.ok && id.length > 0) {
-        const res_data = await fetch(`${API}/userinfor/${id[0].id}`);
+        const res_data = await fetch(`${API}/users/${id[0].id}`);
         const data = await res_data.json();
 
         if (data) {
@@ -77,6 +78,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
 
+  const register = async (username: string, password: string) => {
+  try {
+    const res = await fetch(`${API}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    await fetch(`${API}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        "fullname": '',
+        "address": '',
+        "phonenumber": '',
+        "email": '',
+        "username": username,
+        "birthday": ''
+      }),
+    });
+
+    if (res.ok) {
+      // Tự động đăng nhập sau khi đăng ký thành công
+      await login(username, password);
+    } else {
+      const errorData = await res.json();
+      alert(errorData.message || 'Đăng ký thất bại');
+    }
+  } catch (err) {
+    console.error('Register failed:', err);
+    alert('Đã có lỗi xảy ra khi đăng ký!');
+  }
+};
+
+
   const logout = () => {
     setToken(null);
     setUser(null)
@@ -85,7 +125,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, update, login, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ token, user, update, login, register, logout, isAuthenticated: !!token }}>
       {children}
     </AuthContext.Provider>
   );

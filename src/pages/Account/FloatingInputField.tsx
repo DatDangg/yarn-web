@@ -21,7 +21,7 @@ export default function FloatingInputField({ value, label, type = "text", disabl
       <label
         htmlFor={value}
         className="absolute left-3 top-[-13px] text-[16px] font-[600] font-[family-name:var(--font-Gentium)] text-[var(--text-color)] transition-all duration-200
-          peer-placeholder-shown:top-[25%] peer-placeholder-shown:text-base peer-placeholder-shown:text-[var(--text-color)] font-[600] font-[family-name:var(--font-Gentium)]
+          peer-placeholder-shown:top-[29%] peer-placeholder-shown:text-base peer-placeholder-shown:text-[var(--text-color)] font-[600] font-[family-name:var(--font-Gentium)]
           peer-focus:top-[-13px] peer-focus:text-[16px] font-[600] font-[family-name:var(--font-Gentium)] peer-focus:text-[var(--active-color)] bg-white px-1 pointer-events-none"
       >
         {label}

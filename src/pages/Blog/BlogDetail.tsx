@@ -34,7 +34,7 @@ function BlogDetail() {
         const enrichedComments = await Promise.all(
           comments.map(async (comment) => {
             try {
-              const userRes = await axios.get(`${API}/userinfor/${comment.user_id}`);
+              const userRes = await axios.get(`${API}/users/${comment.user_id}`);
               return {
                 ...comment,
                 userInfor: {
